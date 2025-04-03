@@ -177,6 +177,16 @@ def get_office_hours(
     return oh_event_svc.get(subject, site_id, oh_id)
 
 
+@api.get("/assignments-concepts", tags=["Office Hours"])
+def get_all_issues(
+    assignment_id: str, 
+    oh_event_svc: OfficeHoursService = Depends()):
+    """
+    Gets all of the issues associated with specific assignemnt.
+    """
+    return oh_event_svc.get_all_assignments_concepts()
+
+
 @api.get("/assigments/{assignment_id}", tags=["Office Hours"])
 def get_all_issues(
     assignment_id: str, 

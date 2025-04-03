@@ -490,6 +490,9 @@ class OfficeHoursService:
                 "You cannot access office hours for a class you are not enrolled in."
             )
         
+    def get_all_assignments_concepts(self):
+        return "<Assn and Concepts>"
+
     def get_all_issues(self, assignment_id: str):
         # get all issues associated with this input id
 
