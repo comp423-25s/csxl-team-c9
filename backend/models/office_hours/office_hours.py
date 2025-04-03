@@ -76,3 +76,8 @@ class OfficeHours(NewOfficeHours):
     """
 
     id: int
+
+
+class MoveTicket(BaseModel):
+    ticket_id: str
+    issue_id: str

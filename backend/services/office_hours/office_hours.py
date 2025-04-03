@@ -18,7 +18,7 @@ from ...models.academics.my_courses import (
     OfficeHourEventRoleOverview,
     OfficeHourGetHelpOverview,
 )
-from ...models.office_hours.office_hours import OfficeHours, NewOfficeHours
+from ...models.office_hours.office_hours import OfficeHours, NewOfficeHours, MoveTicket
 from ...models.office_hours.ticket import TicketState
 from ...entities.entity_base import EntityBase
 from ...entities.academics.section_entity import SectionEntity
@@ -489,3 +489,23 @@ class OfficeHoursService:
             raise CoursePermissionException(
                 "You cannot access office hours for a class you are not enrolled in."
             )
+        
+    def get_all_issues(self, assignment_id: str):
+        # get all issues associated with this input id
+
+        return "<fake data>"
+    
+    def get_all_tickets_by_issue(self, issue_id: str):
+        # get all issues associated with an assignment id
+
+        return "<fake data>"
+    
+    def move_ticket(self, moveTicket: MoveTicket):
+        # move ticket from its current issue to a new issue
+
+        return None
+    
+    def delete_ticket(self, ticket_id: str):
+        # delete ticket
+
+        return None

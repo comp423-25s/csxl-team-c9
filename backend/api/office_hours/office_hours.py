@@ -16,14 +16,14 @@ from ...services.office_hours.office_hours_recurrence import (
 from ..authentication import registered_user
 from ...services.office_hours.office_hours import OfficeHoursService
 from ...models.user import User
-from ...models.office_hours.office_hours import OfficeHours, NewOfficeHours
+from ...models.office_hours.office_hours import OfficeHours, NewOfficeHours, MoveTicket
 from ...models.academics.my_courses import (
     OfficeHourQueueOverview,
     OfficeHourEventRoleOverview,
     OfficeHourGetHelpOverview,
 )
 
-__authors__ = ["Ajay Gandecha"]
+__authors__ = ["Ajay Gandecha", "Simon Felt", "Daniel Ramsgard"]
 __copyright__ = "Copyright 2024"
 __license__ = "MIT"
 
@@ -175,3 +175,27 @@ def get_office_hours(
     Gets office hours.
     """
     return oh_event_svc.get(subject, site_id, oh_id)
+
+
+@api.get("/assigments/{assignment_id}")
+def get_all_issues(assignment_id: str, oh_event_svc: OfficeHoursService = Depends()):
+
+    return oh_event_svc.get_all_issues(assignment_id)
+
+
+@api.get("/issues/{issue_id}")
+def get_all_tickets(issue_id: str, oh_event_svc: OfficeHoursService = Depends()):
+
+    return oh_event_svc.get_all_tickets_by_issue(issue_id)
+
+
+@api.post("/issues/move")
+def get_all_tickets(moveTicket: MoveTicket, oh_event_svc: OfficeHoursService = Depends()):
+
+    return oh_event_svc.move_ticket(moveTicket)
+
+
+@api.delete("/issues/{issue_id}")
+def get_all_tickets(issue_id: str, oh_event_svc: OfficeHoursService = Depends()):
+
+    return oh_event_svc.delete_ticket(issue_id)
