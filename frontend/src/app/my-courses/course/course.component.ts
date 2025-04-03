@@ -45,14 +45,14 @@ export class CourseComponent {
           icon: 'groups'
         },
         {
-          label: 'Settings',
-          path: `/course/${this.route.snapshot.params['course_site_id']}/settings`,
-          icon: 'settings'
-        },
-        {
           label: 'Tickets',
           path: `/course/${this.route.snapshot.params['course_site_id']}/tickets`, // change to backend route
           icon: 'mail_outline'
+        },
+        {
+          label: 'Settings',
+          path: `/course/${this.route.snapshot.params['course_site_id']}/settings`,
+          icon: 'settings'
         }
       ];
     } else {
