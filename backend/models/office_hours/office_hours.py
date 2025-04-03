@@ -80,4 +80,4 @@ class OfficeHours(NewOfficeHours):
 
 class MoveTicket(BaseModel):
     ticket_id: str
-    issue_id: str
+    new_issue_id: str
