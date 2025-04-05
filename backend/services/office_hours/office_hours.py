@@ -3,6 +3,7 @@ Service for office hour events.
 """
 
 import math
+import random
 from typing import Type, TypeVar
 from fastapi import Depends
 from sqlalchemy import select, exists, and_, func
@@ -19,7 +20,7 @@ from ...models.academics.my_courses import (
     OfficeHourGetHelpOverview,
 )
 from ...models.office_hours.office_hours import OfficeHours, NewOfficeHours, MoveTicket
-from ...models.office_hours.ticket import TicketState
+from ...models.office_hours.ticket import TicketState, AssignmentConcept
 from ...entities.entity_base import EntityBase
 from ...entities.academics.section_entity import SectionEntity
 from ...entities.office_hours import (
@@ -32,6 +33,7 @@ from ...entities.office_hours.user_created_tickets_table import (
 )
 from ...entities.academics.section_member_entity import SectionMemberEntity
 from ..exceptions import CoursePermissionException, ResourceNotFoundException
+from ...models.office_hours.ticket_type import TicketType
 
 __authors__ = ["Ajay Gandecha", "Jade Keegan", "Kris Jordan"]
 __copyright__ = "Copyright 2024"
@@ -490,25 +492,50 @@ class OfficeHoursService:
                 "You cannot access office hours for a class you are not enrolled in."
             )
         
-    def get_all_assignments_concepts(self):
-        return "<Assn and Concepts>"
+    def get_all_assignments_concepts(self, user: User):
+        num_assignments = 10
+        num_concepts = 7
+        num_items_possible = [1,2,3,4,5,6,7]
 
-    def get_all_issues(self, assignment_id: str):
+        def create_dummy_assignment(indentifier: int):
+            return AssignmentConcept(
+                num_tickets=num_items_possible[random.randint(len(num_items_possible))],
+                name=f'Ex-{indentifier}',
+                category=TicketType.ASSIGNMENT_HELP.value
+            )
+
+        def create_dummy_concept(indentifier: int):
+            return AssignmentConcept(
+                num_tickets=num_items_possible[random.randint(len(num_items_possible))],
+                name=f'Concept-{indentifier}',
+                category=TicketType.CONCEPTUAL_HELP.value
+            )
+            
+
+        assignments = [create_dummy_assignment(i) for i in range(num_assignments)]
+        concepts = [create_dummy_concept(i) for i in range(num_concepts)]
+
+        return {
+            "assignments": assignments,
+            "concepts": concepts
+        }
+
+    def get_all_issues(self, user: User, assignment_id: str):
         # get all issues associated with this input id
 
         return "<fake data>"
     
-    def get_all_tickets_by_issue(self, issue_id: str):
+    def get_all_tickets_by_issue(self, user: User, issue_id: str):
         # get all issues associated with an assignment id
 
-        return "<fake data>"
+        return "data"
     
-    def move_ticket(self, moveTicket: MoveTicket):
+    def move_ticket(self, user: User, moveTicket: MoveTicket):
         # move ticket from its current issue to a new issue
 
         return None
     
-    def delete_ticket(self, ticket_id: str):
+    def delete_ticket(self, user: User, ticket_id: str):
         # delete ticket
 
         return None
