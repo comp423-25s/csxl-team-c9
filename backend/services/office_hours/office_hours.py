@@ -8,6 +8,7 @@ from typing import Type, TypeVar
 from fastapi import Depends
 from sqlalchemy import select, exists, and_, func
 from sqlalchemy.orm import Session, joinedload, selectinload
+from datetime import datetime, timedelta
 
 from ...models.office_hours.office_hours_details import PrimaryOfficeHoursDetails
 from ...database import db_session
@@ -20,7 +21,7 @@ from ...models.academics.my_courses import (
     OfficeHourGetHelpOverview,
 )
 from ...models.office_hours.office_hours import OfficeHours, NewOfficeHours, MoveTicket
-from ...models.office_hours.ticket import TicketState, AssignmentConcept, AssignmentIssue
+from ...models.office_hours.ticket import TicketState, AssignmentConcept, AssignmentIssue, OfficeHoursTicket
 from ...entities.entity_base import EntityBase
 from ...entities.academics.section_entity import SectionEntity
 from ...entities.office_hours import (
@@ -539,18 +540,55 @@ class OfficeHoursService:
         return {
             "issues": issues
         }
-    
-    def get_all_tickets_by_issue(self, user: User, issue_id: str):
-        # get all issues associated with an assignment id
 
-        return "data"
+    def get_all_tickets_by_issue(self, user: User, issue_id: str):
+        # Get all issues associated with an assignment id
+        num_tickets = 10
+        descriptions = [
+            "Need help understanding recursion",
+            "Question about runtime complexity",
+            "Stuck on step 3 of the proof",
+            "Issue with combinatorics problem",
+            "Confused about quantifiers",
+            "Need clarification on assignment instructions",
+            "Bug in my code that I can't trace",
+            "Having trouble with induction base case",
+            "Unclear about notation in lecture",
+            "Need feedback on my logic puzzle solution"
+        ]
+
+        def create_dummy_ticket(identifier: int):
+            return OfficeHoursTicket(
+                id=identifier,
+                description=descriptions[identifier % len(descriptions)],
+                type=random.choice(list(TicketType)),
+                office_hours_id=random.randint(1, 5),
+                state=random.choice(list(TicketState)),
+                created_at=datetime.now() - timedelta(minutes=random.randint(1, 120)),
+                called_at=None if random.random() < 0.5 else datetime.now() - timedelta(minutes=random.randint(1, 60)),
+                closed_at=None if random.random() < 0.5 else datetime.now(),
+                have_concerns=random.choice([True, False]),
+                caller_notes=random.choice([
+                    "Student requested quick response",
+                    "Wants to discuss in detail",
+                    "Follow-up from last week",
+                    "Prefers email explanation",
+                    ""
+                ]),
+                caller_id=random.randint(1000, 9999)
+            )
+
+        tickets = [create_dummy_ticket(i) for i in range(num_tickets)]
+
+        return {
+            "issues": tickets
+        }
+
     
     def move_ticket(self, user: User, moveTicket: MoveTicket):
         # move ticket from its current issue to a new issue
-
         return None
     
     def delete_ticket(self, user: User, ticket_id: str):
         # delete ticket
-
         return None
