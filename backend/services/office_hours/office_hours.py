@@ -3,10 +3,12 @@ Service for office hour events.
 """
 
 import math
+import random
 from typing import Type, TypeVar
 from fastapi import Depends
 from sqlalchemy import select, exists, and_, func
 from sqlalchemy.orm import Session, joinedload, selectinload
+from datetime import datetime, timedelta
 
 from ...models.office_hours.office_hours_details import PrimaryOfficeHoursDetails
 from ...database import db_session
@@ -19,7 +21,7 @@ from ...models.academics.my_courses import (
     OfficeHourGetHelpOverview,
 )
 from ...models.office_hours.office_hours import OfficeHours, NewOfficeHours, MoveTicket
-from ...models.office_hours.ticket import TicketState
+from ...models.office_hours.ticket import TicketState, AssignmentConcept, AssignmentIssue, OfficeHoursTicket
 from ...entities.entity_base import EntityBase
 from ...entities.academics.section_entity import SectionEntity
 from ...entities.office_hours import (
@@ -32,6 +34,7 @@ from ...entities.office_hours.user_created_tickets_table import (
 )
 from ...entities.academics.section_member_entity import SectionMemberEntity
 from ..exceptions import CoursePermissionException, ResourceNotFoundException
+from ...models.office_hours.ticket_type import TicketType
 
 __authors__ = ["Ajay Gandecha", "Jade Keegan", "Kris Jordan"]
 __copyright__ = "Copyright 2024"
@@ -491,24 +494,102 @@ class OfficeHoursService:
             )
         
     def get_all_assignments_concepts(self):
-        return "<Assn and Concepts>"
+        num_assignments = 10
+        num_concepts = 7
+        num_items_possible = [1,2,3,4,5,6,7]
+
+        def create_dummy_assignment(indentifier: int):
+            return AssignmentConcept(
+                id=indentifier,
+                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
+                name=f'Ex-{indentifier}',
+                category=TicketType.ASSIGNMENT_HELP
+            )
+
+        def create_dummy_concept(indentifier: int):
+            return AssignmentConcept(
+                id=indentifier,
+                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
+                name=f'Concept-{indentifier}',
+                category=TicketType.CONCEPTUAL_HELP
+            )
+            
+
+        assignments = [create_dummy_assignment(i) for i in range(num_assignments)]
+        concepts = [create_dummy_concept(i) for i in range(num_concepts)]
+
+        return {
+            "assignments": assignments,
+            "concepts": concepts
+        }
 
     def get_all_issues(self, assignment_id: str):
         # get all issues associated with this input id
 
-        return "<fake data>"
-    
-    def get_all_tickets_by_issue(self, issue_id: str):
-        # get all issues associated with an assignment id
+        num_issues = 10
+        num_items_possible = [1,2,3,4,5,6,7]
 
-        return "<fake data>"
+        def create_dummy_issue(indentifier: int):
+            return AssignmentIssue(
+                id=indentifier,
+                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
+                name=f'Issue-{indentifier}'
+            )
+
+        issues = [create_dummy_issue(i) for i in range(num_issues)]
+
+        return {
+            "issues": issues
+        }
+
+    def get_all_tickets_by_issue(self, issue_id: str):
+        # Get all issues associated with an assignment id
+        num_tickets = 10
+        descriptions = [
+            "Need help understanding recursion",
+            "Question about runtime complexity",
+            "Stuck on step 3 of the proof",
+            "Issue with combinatorics problem",
+            "Confused about quantifiers",
+            "Need clarification on assignment instructions",
+            "Bug in my code that I can't trace",
+            "Having trouble with induction base case",
+            "Unclear about notation in lecture",
+            "Need feedback on my logic puzzle solution"
+        ]
+
+        def create_dummy_ticket(identifier: int):
+            return OfficeHoursTicket(
+                id=identifier,
+                description=descriptions[identifier % len(descriptions)],
+                type=random.choice(list(TicketType)),
+                office_hours_id=random.randint(1, 5),
+                state=random.choice(list(TicketState)),
+                created_at=datetime.now() - timedelta(minutes=random.randint(1, 120)),
+                called_at=None if random.random() < 0.5 else datetime.now() - timedelta(minutes=random.randint(1, 60)),
+                closed_at=None if random.random() < 0.5 else datetime.now(),
+                have_concerns=random.choice([True, False]),
+                caller_notes=random.choice([
+                    "Student requested quick response",
+                    "Wants to discuss in detail",
+                    "Follow-up from last week",
+                    "Prefers email explanation",
+                    ""
+                ]),
+                caller_id=random.randint(1000, 9999)
+            )
+
+        tickets = [create_dummy_ticket(i) for i in range(num_tickets)]
+
+        return {
+            "issues": tickets
+        }
+
     
     def move_ticket(self, moveTicket: MoveTicket):
         # move ticket from its current issue to a new issue
-
         return None
     
     def delete_ticket(self, ticket_id: str):
         # delete ticket
-
         return None

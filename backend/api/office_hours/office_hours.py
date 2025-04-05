@@ -30,6 +30,55 @@ __license__ = "MIT"
 api = APIRouter(prefix="/api/office-hours")
 
 
+@api.get("/assignments-concepts", tags=["Office Hours"])
+def get_all_issues(
+    oh_event_svc: OfficeHoursService = Depends()):
+    """
+    Gets all of the issues associated with specific assignemnt.
+    """
+    return oh_event_svc.get_all_assignments_concepts()
+
+
+@api.get("/assigments/{assignment_id}", tags=["Office Hours"])
+def get_all_issues(
+    assignment_id: str, 
+    oh_event_svc: OfficeHoursService = Depends()):
+    """
+    Gets all of the issues associated with specific assignemnt.
+    """
+    return oh_event_svc.get_all_issues(assignment_id)
+
+
+@api.get("/issues/{issue_id}", tags=["Office Hours"])
+def get_all_tickets(
+    issue_id: str, 
+    oh_event_svc: OfficeHoursService = Depends()):
+    """
+    Gets all tickets associated with specific issue.
+    """
+    return oh_event_svc.get_all_tickets_by_issue(issue_id)
+
+
+@api.post("/issues/move", tags=["Office Hours"])
+def get_all_tickets(
+    moveTicket: MoveTicket,
+    oh_event_svc: OfficeHoursService = Depends()):
+    """
+    Moves ticket to new issue
+    """
+    return oh_event_svc.move_ticket(moveTicket)
+
+
+@api.delete("/issues/{issue_id}", tags=["Office Hours"])
+def get_all_tickets(
+    issue_id: str,
+    oh_event_svc: OfficeHoursService = Depends()):
+    """
+    Deletes specific issue forever.
+    """
+    return oh_event_svc.delete_ticket(issue_id)
+
+
 @api.get("/{id}/queue", tags=["Office Hours"])
 def get_office_hours_queue(
     id: int,
@@ -175,53 +224,3 @@ def get_office_hours(
     Gets office hours.
     """
     return oh_event_svc.get(subject, site_id, oh_id)
-
-
-@api.get("/assignments-concepts", tags=["Office Hours"])
-def get_all_issues(
-    assignment_id: str, 
-    oh_event_svc: OfficeHoursService = Depends()):
-    """
-    Gets all of the issues associated with specific assignemnt.
-    """
-    return oh_event_svc.get_all_assignments_concepts()
-
-
-@api.get("/assigments/{assignment_id}", tags=["Office Hours"])
-def get_all_issues(
-    assignment_id: str, 
-    oh_event_svc: OfficeHoursService = Depends()):
-    """
-    Gets all of the issues associated with specific assignemnt.
-    """
-    return oh_event_svc.get_all_issues(assignment_id)
-
-
-@api.get("/issues/{issue_id}", tags=["Office Hours"])
-def get_all_tickets(
-    issue_id: str, 
-    oh_event_svc: OfficeHoursService = Depends()):
-    """
-    Gets all tickets associated with specific issue.
-    """
-    return oh_event_svc.get_all_tickets_by_issue(issue_id)
-
-
-@api.post("/issues/move", tags=["Office Hours"])
-def get_all_tickets(
-    moveTicket: MoveTicket,
-    oh_event_svc: OfficeHoursService = Depends()):
-    """
-    Moves ticket to new issue
-    """
-    return oh_event_svc.move_ticket(moveTicket)
-
-
-@api.delete("/issues/{issue_id}", tags=["Office Hours"])
-def get_all_tickets(
-    issue_id: str,
-    oh_event_svc: OfficeHoursService = Depends()):
-    """
-    Deletes specific issue forever.
-    """
-    return oh_event_svc.delete_ticket(issue_id)
