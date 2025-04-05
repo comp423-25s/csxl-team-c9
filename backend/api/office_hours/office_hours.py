@@ -179,7 +179,6 @@ def get_office_hours(
 
 @api.get("/assignments-concepts", tags=["Office Hours"])
 def get_all_issues(
-    assignment_id: str, 
     oh_event_svc: OfficeHoursService = Depends()):
     """
     Gets all of the issues associated with specific assignemnt.
