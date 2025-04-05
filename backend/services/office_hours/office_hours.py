@@ -20,7 +20,7 @@ from ...models.academics.my_courses import (
     OfficeHourGetHelpOverview,
 )
 from ...models.office_hours.office_hours import OfficeHours, NewOfficeHours, MoveTicket
-from ...models.office_hours.ticket import TicketState, AssignmentConcept
+from ...models.office_hours.ticket import TicketState, AssignmentConcept, AssignmentIssue
 from ...entities.entity_base import EntityBase
 from ...entities.academics.section_entity import SectionEntity
 from ...entities.office_hours import (
@@ -506,6 +506,7 @@ class OfficeHoursService:
 
         def create_dummy_concept(indentifier: int):
             return AssignmentConcept(
+                id=indentifier,
                 num_tickets=num_items_possible[random.randint(len(num_items_possible))],
                 name=f'Concept-{indentifier}',
                 category=TicketType.CONCEPTUAL_HELP.value
@@ -523,7 +524,21 @@ class OfficeHoursService:
     def get_all_issues(self, user: User, assignment_id: str):
         # get all issues associated with this input id
 
-        return "<fake data>"
+        num_issues = 10
+        num_items_possible = [1,2,3,4,5,6,7]
+
+        def create_dummy_issue(indentifier: int):
+            return AssignmentIssue(
+                id=indentifier,
+                num_tickets=num_items_possible[random.randint(len(num_items_possible))],
+                name=f'Issue-{indentifier}'
+            )
+
+        issues = [create_dummy_issue(i) for i in range(num_issues)]
+
+        return {
+            "issues": issues
+        }
     
     def get_all_tickets_by_issue(self, user: User, issue_id: str):
         # get all issues associated with an assignment id

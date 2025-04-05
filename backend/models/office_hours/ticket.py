@@ -57,3 +57,15 @@ class AssignmentConcept(BaseModel):
     num_tickets: int
     name: str
     category: Literal[TicketType.ASSIGNMENT_HELP, TicketType.CONCEPTUAL_HELP]
+
+
+class AssignmentIssue(BaseModel):
+    """
+    Pydantic model to represent an `AssignmentIssue`.
+
+    This model stores the data for an assignments issues.
+    """
+    id: int
+    num_tickets: int
+    name: str
+    
