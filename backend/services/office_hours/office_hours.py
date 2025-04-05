@@ -493,24 +493,25 @@ class OfficeHoursService:
                 "You cannot access office hours for a class you are not enrolled in."
             )
         
-    def get_all_assignments_concepts(self, user: User):
+    def get_all_assignments_concepts(self):
         num_assignments = 10
         num_concepts = 7
         num_items_possible = [1,2,3,4,5,6,7]
 
         def create_dummy_assignment(indentifier: int):
             return AssignmentConcept(
-                num_tickets=num_items_possible[random.randint(len(num_items_possible))],
+                id=indentifier,
+                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
                 name=f'Ex-{indentifier}',
-                category=TicketType.ASSIGNMENT_HELP.value
+                category=TicketType.ASSIGNMENT_HELP
             )
 
         def create_dummy_concept(indentifier: int):
             return AssignmentConcept(
                 id=indentifier,
-                num_tickets=num_items_possible[random.randint(len(num_items_possible))],
+                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
                 name=f'Concept-{indentifier}',
-                category=TicketType.CONCEPTUAL_HELP.value
+                category=TicketType.CONCEPTUAL_HELP
             )
             
 
@@ -522,7 +523,7 @@ class OfficeHoursService:
             "concepts": concepts
         }
 
-    def get_all_issues(self, user: User, assignment_id: str):
+    def get_all_issues(self, assignment_id: str):
         # get all issues associated with this input id
 
         num_issues = 10
@@ -531,7 +532,7 @@ class OfficeHoursService:
         def create_dummy_issue(indentifier: int):
             return AssignmentIssue(
                 id=indentifier,
-                num_tickets=num_items_possible[random.randint(len(num_items_possible))],
+                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
                 name=f'Issue-{indentifier}'
             )
 
@@ -541,7 +542,7 @@ class OfficeHoursService:
             "issues": issues
         }
 
-    def get_all_tickets_by_issue(self, user: User, issue_id: str):
+    def get_all_tickets_by_issue(self, issue_id: str):
         # Get all issues associated with an assignment id
         num_tickets = 10
         descriptions = [
@@ -585,10 +586,10 @@ class OfficeHoursService:
         }
 
     
-    def move_ticket(self, user: User, moveTicket: MoveTicket):
+    def move_ticket(self, moveTicket: MoveTicket):
         # move ticket from its current issue to a new issue
         return None
     
-    def delete_ticket(self, user: User, ticket_id: str):
+    def delete_ticket(self, ticket_id: str):
         # delete ticket
         return None
