@@ -30,6 +30,7 @@ export class AssignmentsConceptsPageComponent {
 
   ngOnInit() {
     this.getAllAssignmentsConcepts().subscribe((data: AssignmentsConcepts) => {
+      console.log(data);
       this.assnConcepts.set(data);
     });
   }
