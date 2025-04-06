@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Literal
 
 from .ticket_type import TicketType
 from .ticket_state import TicketState
@@ -45,27 +44,3 @@ class OfficeHoursTicket(NewOfficeHoursTicket):
     have_concerns: bool = False
     caller_notes: str = ""
     caller_id: int | None
-
-
-class AssignmentConcept(BaseModel):
-    """
-    Pydantic model to represent an `AssignmentConcepts`.
-
-    This model stores the data for an assignment or concept
-    """
-    id: int
-    num_tickets: int
-    name: str
-    category: Literal[TicketType.ASSIGNMENT_HELP, TicketType.CONCEPTUAL_HELP]
-
-
-class AssignmentIssue(BaseModel):
-    """
-    Pydantic model to represent an `AssignmentIssue`.
-
-    This model stores the data for an assignments issues.
-    """
-    id: int
-    num_tickets: int
-    name: str
-    
