@@ -23,14 +23,14 @@ export class AssignmentsConceptsPageComponent {
     canActivate: [myCoursesInstructorGuard]
   };
 
-  assnData = signal<AssignmentsConcepts>({
+  assnConcepts = signal<AssignmentsConcepts>({
     assignments: [],
     concepts: []
   });
 
   ngOnInit() {
     this.getAllAssignmentsConcepts().subscribe((data: AssignmentsConcepts) => {
-      this.assnData.set(data);
+      this.assnConcepts.set(data);
     });
   }
 

@@ -80,6 +80,12 @@ export interface AssignmentsConcepts {
   concepts: AssignmentConcept[];
 }
 
+export interface Issue {
+  id: number;
+  num_tickets: number;
+  name: string;
+}
+
 export interface CourseMemberOverview {
   pid: number;
   first_name: string;
