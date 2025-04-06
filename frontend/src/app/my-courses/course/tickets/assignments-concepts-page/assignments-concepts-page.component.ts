@@ -1,6 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
+import { AssignmentsConcepts } from 'src/app/my-courses/my-courses.model';
 
 @Component({
   selector: 'app-assignments-concepts-page',
@@ -17,5 +20,18 @@ export class AssignmentsConceptsPageComponent {
     canActivate: [myCoursesInstructorGuard]
   };
 
-  constructor(private route: ActivatedRoute) {}
+  courseSiteId: string;
+
+  constructor(
+    private route: ActivatedRoute,
+    private client: HttpClient
+  ) {
+    this.courseSiteId = this.route.parent!.snapshot.params['course_site_id'];
+  }
+
+  getAllAssignmentsConcepts(): Observable<AssignmentsConcepts> {
+    return this.client.get<AssignmentsConcepts>(
+      `/api/office-hours/assignments-concepts`
+    );
+  }
 }
