@@ -172,6 +172,10 @@ export interface Ticket {
   caller_id: number;
 }
 
+export interface TicketWrapper {
+  tickets: Ticket[];
+}
+
 export interface OfficeHourQueueOverviewJson {
   id: number;
   type: string;
