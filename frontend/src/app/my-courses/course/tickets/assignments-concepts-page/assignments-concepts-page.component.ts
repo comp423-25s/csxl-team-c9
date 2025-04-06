@@ -35,13 +35,12 @@ export class AssignmentsConceptsPageComponent {
       this.assnConcepts.set(data);
     });
   }
+  courseSiteId: string;
 
   navigateToIssues(): void {
     console.log('MFOOFMFMF');
-    this.router.navigate(['/course/3/issues']);
+    this.router.navigate([`/course/${this.courseSiteId}/issues`]);
   }
-
-  courseSiteId: string;
 
   constructor(
     private route: ActivatedRoute,
