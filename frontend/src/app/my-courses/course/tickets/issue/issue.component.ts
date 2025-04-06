@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
-import { Issue } from 'src/app/my-courses/my-courses.model';
+import { Issue, IssueWrapper } from 'src/app/my-courses/my-courses.model';
 
 @Component({
   selector: 'app-issue',
@@ -23,22 +23,27 @@ export class IssueComponent {
   issues = signal<Issue[]>([]);
 
   ngOnInit() {
-    this.getAllAssignmentsConcepts().subscribe((data: Issue[]) => {
+    this.getAllAssignmentsConcepts().subscribe((data: IssueWrapper) => {
       console.log(data);
-      this.issues.set(data);
+      this.issues.set(data.issues);
     });
+  }
+
+  navigateToTickets(): void {
+    this.router.navigate(['/courses/3/ticket-group']);
   }
 
   courseSiteId: string;
 
   constructor(
     private route: ActivatedRoute,
-    private client: HttpClient
+    private client: HttpClient,
+    private router: Router
   ) {
     this.courseSiteId = this.route.parent!.snapshot.params['course_site_id'];
   }
 
-  getAllAssignmentsConcepts(): Observable<Issue[]> {
-    return this.client.get<Issue[]>(`/api/office-hours/assignments/1`);
+  getAllAssignmentsConcepts(): Observable<IssueWrapper> {
+    return this.client.get<IssueWrapper>(`/api/office-hours/assignments/1`);
   }
 }

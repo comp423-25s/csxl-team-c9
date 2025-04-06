@@ -86,6 +86,10 @@ export interface Issue {
   name: string;
 }
 
+export interface IssueWrapper {
+  issues: Issue[];
+}
+
 export interface CourseMemberOverview {
   pid: number;
   first_name: string;

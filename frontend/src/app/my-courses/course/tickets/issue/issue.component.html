@@ -1,16 +1,11 @@
-<!-- display assignment id at top 
-then 
-issue name, tickets under it, view button to link to the tickets under it  -->
-<h1>{{courseSiteId}}</h1>
-@for (item of issues(); track item){
-    <h3>{{ item.name }}</h3>
-    <p>{{ item.num_tickets }}</p>
-    <button>View</button>
-    <!-- <a [attr.href]="http://localhost:1560/course/3/office-hours" target="_blank">
-      View
-    </a> -->
-}
-    <!-- need to make button link to group page -->
-<p>
-  hello world
-</p>
+<div class="course-card-container">
+  @for (item of issues(); track item){
+    <div class="left-column">
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.num_tickets }}</p>
+          <button (click)="navigateToTickets()">  clicking this needs to the issues page
+            View
+          </button>
+        </div>
+  }
+</div>
