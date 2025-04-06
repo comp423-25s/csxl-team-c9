@@ -68,6 +68,18 @@ export interface TermOverviewJson {
   teaching_no_site: TeachingSectionOverview[];
 }
 
+export interface AssignmentConcept {
+  id: number;
+  name: string;
+  num_tickets: number;
+  category: number;
+}
+
+export interface AssignmentsConcepts {
+  assignments: AssignmentConcept[];
+  concepts: AssignmentConcept[];
+}
+
 export interface CourseMemberOverview {
   pid: number;
   first_name: string;
