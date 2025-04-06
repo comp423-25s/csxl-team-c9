@@ -10,7 +10,7 @@ import { officeHourPageGuard } from '../../office-hours/office-hours.guard';
 })
 export class IssueComponent {
   public static Route = {
-    //path: 'office-hours/:event_id/queue',
+    path: '/tickets/Issue',
     title: 'Issue',
     component: IssueComponent,
     canActivate: [officeHourPageGuard(['UTA', 'GTA', 'Instructor'])]
