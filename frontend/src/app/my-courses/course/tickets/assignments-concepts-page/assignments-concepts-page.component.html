@@ -1,1 +1,37 @@
-<p>assignments-concepts-page works!</p>
+<!-- here is the navigation like we had in the figma --> 
+ 
+<mat-card-title>Tickets</mat-card-title> <!-- reused header-->
+<!-- add create button-->
+<left-column><h2>Assignments</h1></left-column> <!-- headers for the two cols we will sort info into-->
+<right-column><h2>Concepts</h2></right-column> 
+<course-card> <!-- fake info for now bc need to ref backend -->
+    <p>EX01</p> <!-- ass or concept-->
+    <label> 7 </label> <!-- number of issues under the ass or concept-->
+    <button> View </button> <!-- make view button link to group.component page-->
+
+</course-card>
+
+<!-- <course-card.widget>     
+  
+  
+not sure how we are referencing this bc i keep trying the names and go to def but wont pull it up but widget in 
+my-courses -> widgets -> course-card
+
+we need to grab the name of the assignment, amt of tickets under it, and then the view button links to next page and gets tickets that relate to that 
+
+  this is code from another but i just added as a refs...
+    @for (sectionId of selectedSections(); track sectionId) { @if
+    (sectionForId(sectionId)) {
+    <mat-chip-row (removed)="remove(sectionForId(sectionId)!)">
+      {{ sectionForId(sectionId)!.subject_code }}  
+       
+      we need to check if it is an assignment or concept and add it 
+       accordingly to the correct column
+       
+       
+      {{ sectionForId(sectionId)!.course_number }}-{{
+        sectionForId(sectionId)!.section_number
+      }}
+      <label matChipRemove>
+    </course-card-component>
+  }} -->
