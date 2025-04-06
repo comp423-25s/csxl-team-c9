@@ -1,9 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
-import { AssignmentsConcepts } from 'src/app/my-courses/my-courses.model';
+import {
+  AssignmentConcept,
+  AssignmentsConcepts
+} from 'src/app/my-courses/my-courses.model';
 
 @Component({
   selector: 'app-assignments-concepts-page',
@@ -19,6 +22,18 @@ export class AssignmentsConceptsPageComponent {
     component: AssignmentsConceptsPageComponent,
     canActivate: [myCoursesInstructorGuard]
   };
+
+  assnData = signal<AssignmentsConcepts>({
+    assignments: [],
+    concepts: []
+  });
+
+  ngOnInit() {
+    this.getAllAssignmentsConcepts().subscribe((data: AssignmentsConcepts) => {
+      console.log(data);
+      this.assnData.set(data);
+    });
+  }
 
   courseSiteId: string;
 
