@@ -11,6 +11,7 @@ import { Injectable, WritableSignal, computed, signal } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+// import {AssignmentConcept} from 'backend/models/office_hours/ticket.py'
 import {
   OfficeHourEventOverview,
   OfficeHourEventOverviewJson,

@@ -1,0 +1,8 @@
+<div class="course-card-container">
+    @for (item of assnData().assignments; track item){
+            <h3>{{ item.name }}</h3>
+            <p>Number of Tickets: {{ item.num_tickets }}</p>
+            <!-- <button (item)>View</button> -->
+        <!-- this meth returns list of ass and concept need to iterate that to get name of item-->
+    }
+</div>
