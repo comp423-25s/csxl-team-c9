@@ -8,6 +8,7 @@ import {
   AssignmentsConcepts
 } from 'src/app/my-courses/my-courses.model';
 import { Router } from '@angular/router';
+import { AssignmentCardWidget } from '../widgets/assignment-card/assignment-card.widget';
 
 @Component({
   selector: 'app-assignments-concepts-page',

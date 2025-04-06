@@ -1,0 +1,24 @@
+<mat-card
+[class]="
+  'assignment-card ' + (course.role !== 'Student' && 'surface-container-card')
+"
+appearance="outlined">
+<mat-card-header>
+  <mat-card-title class="title-medium">
+    {{ item.name }}
+  </mat-card-title>
+  <mat-card-subtitle class="title-small assignment-card-title"></mat-card-subtitle>
+</mat-card-header>
+<mat-card-content>
+    
+</mat-card-content>
+<mat-card-actions class="assignment-card-actions">
+  @if (course.role === 'Student') {
+  <!-- <button mat-stroked-button color="secondary" type="submit">Details</button> -->
+  <button (click)="navigateToIssues()"
+    mat-flat-button
+    color="primary"
+    View></button>
+  }
+</mat-card-actions>
+</mat-card>
