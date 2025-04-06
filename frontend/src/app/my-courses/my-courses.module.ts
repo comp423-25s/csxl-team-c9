@@ -19,7 +19,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {} from './widgets/course-card/course-card.widget';
+import { CourseCardWidget } from './widgets/course-card/course-card.widget';
 import { CatalogComponent } from './catalog/catalog.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AllCoursesComponent } from './catalog/course-catalog/course-catalog.component';
