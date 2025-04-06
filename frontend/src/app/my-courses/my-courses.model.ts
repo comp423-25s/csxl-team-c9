@@ -86,6 +86,10 @@ export interface Issue {
   name: string;
 }
 
+export interface IssueWrapper {
+  issues: Issue[];
+}
+
 export interface CourseMemberOverview {
   pid: number;
   first_name: string;
@@ -166,6 +170,10 @@ export interface Ticket {
   have_concerns: boolean;
   caller_notes: string;
   caller_id: number;
+}
+
+export interface TicketWrapper {
+  tickets: Ticket[];
 }
 
 export interface OfficeHourQueueOverviewJson {

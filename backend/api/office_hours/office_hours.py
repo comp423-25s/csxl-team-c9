@@ -40,7 +40,7 @@ def get_all_issues(
     return oh_event_svc.get_all_assignments_concepts()
 
 
-@api.get("/assigments/{assignment_id}", tags=["Office Hours"])
+@api.get("/assignments/{assignment_id}", tags=["Office Hours"])
 def get_all_issues(
     assignment_id: str, 
     oh_event_svc: OfficeHoursService = Depends()):

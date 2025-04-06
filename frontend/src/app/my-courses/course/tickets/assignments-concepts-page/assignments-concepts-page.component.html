@@ -1,0 +1,22 @@
+<div class="course-card-container">
+  @for (item of assnConcepts().assignments; track item){
+    <div class="left-column">
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.num_tickets }}</p>
+          <button (click)="navigateToIssues()">  clicking this needs to the issues page
+            View
+          </button>
+        </div>
+  }
+   
+  @for (item of assnConcepts().concepts; track item){
+    <div class="right-column">
+        <h3>{{ item.name }}</h3>
+        <p>{{ item.num_tickets }}</p>
+        <button (click)="navigateToIssues()">  clicking this needs to the issues page
+          View
+        </button>
+      </div>
+}
+</div>
+

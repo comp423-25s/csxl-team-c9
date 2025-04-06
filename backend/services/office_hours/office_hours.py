@@ -582,7 +582,7 @@ class OfficeHoursService:
         tickets = [create_dummy_ticket(i) for i in range(num_tickets)]
 
         return {
-            "issues": tickets
+            "tickets": tickets
         }
 
     

@@ -1,1 +1,11 @@
-
+<div class="course-card-container">
+  @for (item of issues(); track item){
+    <div class="left-column">
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.num_tickets }}</p>
+          <button (click)="navigateToTickets()">  clicking this needs to the issues page
+            View
+          </button>
+        </div>
+  }
+</div>

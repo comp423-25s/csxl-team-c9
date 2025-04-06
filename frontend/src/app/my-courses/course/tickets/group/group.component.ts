@@ -3,7 +3,7 @@ import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
-import { Ticket } from 'src/app/my-courses/my-courses.model';
+import { Ticket, TicketWrapper } from 'src/app/my-courses/my-courses.model';
 
 @Component({
   selector: 'app-group',
@@ -32,13 +32,13 @@ export class GroupComponent {
   tickets = signal<Ticket[]>([]);
 
   ngOnInit() {
-    this.getAllAssignmentsConcepts().subscribe((data: Ticket[]) => {
+    this.getAllAssignmentsConcepts().subscribe((data: TicketWrapper) => {
       console.log(data);
-      this.tickets.set(data);
+      this.tickets.set(data.tickets);
     });
   }
 
-  getAllAssignmentsConcepts(): Observable<Ticket[]> {
-    return this.client.get<Ticket[]>(`/api/office-hours/issues/1`);
+  getAllAssignmentsConcepts(): Observable<TicketWrapper> {
+    return this.client.get<TicketWrapper>(`/api/office-hours/issues/1`);
   }
 }

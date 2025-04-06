@@ -1,0 +1,11 @@
+.left-column {
+  flex: 1;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.right-column {
+  flex: 1;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
