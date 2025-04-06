@@ -20,6 +20,9 @@ import { OfficeHoursQueueComponent } from './course/office-hours/office-hours-qu
 import { OfficeHoursGetHelpComponent } from './course/office-hours/office-hours-get-help/office-hours-get-help.component';
 import { SettingsComponent } from './course/settings/settings.component';
 import { OfficeHoursEditorComponent } from './course/office-hours/office-hours-editor/office-hours-editor.component';
+import { AssignmentsConceptsPageComponent } from './course/tickets/assignments-concepts-page/assignments-concepts-page.component';
+import { IssueComponent } from './course/tickets/issue/issue.component';
+import { GroupComponent } from './course/tickets/group/group.component';
 
 const routes: Routes = [
   MyCoursesPageComponent.Route,
@@ -37,7 +40,10 @@ const routes: Routes = [
       OfficeHoursPageComponent.Route,
       OfficeHoursQueueComponent.Route,
       OfficeHoursGetHelpComponent.Route,
-      OfficeHoursEditorComponent.Route
+      OfficeHoursEditorComponent.Route,
+      AssignmentsConceptsPageComponent.Route,
+      GroupComponent.Route,
+      IssueComponent.Route
     ]
   }
 ];

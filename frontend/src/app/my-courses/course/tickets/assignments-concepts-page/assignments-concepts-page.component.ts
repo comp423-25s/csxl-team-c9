@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
 
 @Component({
   selector: 'app-assignments-concepts-page',
@@ -8,5 +10,12 @@ import { Component } from '@angular/core';
   styleUrl: './assignments-concepts-page.component.css'
 })
 export class AssignmentsConceptsPageComponent {
+  public static Route = {
+    path: 'tickets',
+    title: 'Course',
+    component: AssignmentsConceptsPageComponent,
+    canActivate: [myCoursesInstructorGuard]
+  };
 
+  constructor(private route: ActivatedRoute) {}
 }

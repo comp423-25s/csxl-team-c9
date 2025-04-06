@@ -10,7 +10,8 @@ const routes: Routes = [
   HomeComponent.Route,
   AboutComponent.Route,
   GateComponent.Route,
-  { path: 'signage',
+  {
+    path: 'signage',
     title: 'XL Signage',
     loadChildren: () =>
       import('./signage/signage.module').then((m) => m.SignageModule)
@@ -52,12 +53,6 @@ const routes: Routes = [
     title: 'Experimental',
     loadChildren: () =>
       import('./event/event.module').then((m) => m.EventModule)
-  },
-  {
-    path: '',
-    title: 'My Courses',
-    loadChildren: () =>
-      import('./my-courses/my-courses.module').then((m) => m.MyCoursesModule)
   },
   {
     path: '',
