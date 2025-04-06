@@ -11,7 +11,7 @@ import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
 })
 export class GroupComponent {
   public static Route = {
-    path: 'tickets',
+    path: 'ticket-group',
     title: 'Course',
     component: GroupComponent,
     canActivate: [myCoursesInstructorGuard]
