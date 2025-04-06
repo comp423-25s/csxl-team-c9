@@ -1,0 +1,25 @@
+<div class="course-card-container">
+  @for (item of assnConcepts().assignments; track item){
+    <div class="left-column">
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.num_tickets }}</p>
+          <button>View</button>
+          <!-- <a [attr.href]="http://localhost:1560/course/3/office-hours" target="_blank">
+            View
+          </a> -->
+        </div>
+  }
+  <!-- use issue html bc they were put in backwards-->
+   
+  @for (item of assnConcepts().concepts; track item){
+    <div class="right-column">
+      <h3>{{ item.name }}</h3>
+      <p>{{ item.num_tickets }}</p>
+      <button>View</button>
+      <!-- <button (click)="importFromCanvas()">  clicking this needs to the issues page
+          View
+        </button> -->
+      </div>
+}
+</div>
+
