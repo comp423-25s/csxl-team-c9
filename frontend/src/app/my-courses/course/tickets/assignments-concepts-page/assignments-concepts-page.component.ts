@@ -7,6 +7,7 @@ import {
   AssignmentConcept,
   AssignmentsConcepts
 } from 'src/app/my-courses/my-courses.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assignments-concepts-page',
@@ -35,11 +36,17 @@ export class AssignmentsConceptsPageComponent {
     });
   }
 
+  navigateToIssues(): void {
+    console.log('MFOOFMFMF');
+    this.router.navigate(['/course/3/issues']);
+  }
+
   courseSiteId: string;
 
   constructor(
     private route: ActivatedRoute,
-    private client: HttpClient
+    private client: HttpClient,
+    private router: Router
   ) {
     this.courseSiteId = this.route.parent!.snapshot.params['course_site_id'];
   }
