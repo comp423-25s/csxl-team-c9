@@ -154,6 +154,20 @@ export interface OfficeHourTicketOverview {
   caller: PublicProfile | undefined;
 }
 
+export interface Ticket {
+  description: string;
+  type: number;
+  office_hours_id: number;
+  id: number;
+  state: number;
+  created_at: string; // ISO timestamp
+  called_at: string; // ISO timestamp
+  closed_at: string | null; // Nullable ISO timestamp
+  have_concerns: boolean;
+  caller_notes: string;
+  caller_id: number;
+}
+
 export interface OfficeHourQueueOverviewJson {
   id: number;
   type: string;
