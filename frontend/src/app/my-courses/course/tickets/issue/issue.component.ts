@@ -14,7 +14,7 @@ import { Issue } from 'src/app/my-courses/my-courses.model';
 })
 export class IssueComponent {
   public static Route = {
-    path: 'issue',
+    path: 'issues',
     title: 'Course',
     component: IssueComponent,
     canActivate: [myCoursesInstructorGuard]
