@@ -1,22 +1,26 @@
 <div class="container">
   <div class="left-column">
-    <h4 style="text-align: center;">Assignments</h4>
+    <h4 class="header">Assignments</h4>
     <div class="grid">
   @for (item of assnConcepts().assignments; track item){
-          <h3>{{ item.name }}</h3>
-          <p>{{ item.num_tickets }}</p>
-          <button class="view-button" (click)="navigateToIssues()">View</button>
+    <div class="grid-item">
+      <span class="ticket-count">{{ item.num_tickets }}</span>
+      <h3>{{ item.name }}</h3>
+      <button class="view-button" (click)="navigateToIssues()">View</button>
+    </div>    
   }
 </div>
 </div>
    
 <div class="right-column">
-  <h4 style="text-align: center;"> Concepts</h4>
+  <h4 class="header"> Concepts</h4>
   <div class="grid">
   @for (item of assnConcepts().concepts; track item){
-        <h3>{{ item.name }}</h3>
-        <p>{{ item.num_tickets }}</p>
-        <button class="view-button" (click)="navigateToIssues()">View</button> <!-- could make this a widget to reuse-->
+    <div class="grid-item">
+      <span class="ticket-count">{{ item.num_tickets }}</span>
+      <h3>{{ item.name }}</h3>
+      <button class="view-button" (click)="navigateToIssues()">View</button>
+    </div>    
 }
 </div>
 </div>

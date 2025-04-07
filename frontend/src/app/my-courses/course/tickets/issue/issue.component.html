@@ -1,7 +1,9 @@
-<div class="container">
+<div class="container, grid">
   @for (item of issues(); track item){
-          <h2 style=>{{ item.name }}</h2>
-          <p>{{ item.num_tickets }}</p>
-          <button (click)="navigateToTickets()" class="view-button">View</button>
+    <div class="grid-item">
+      <span class="ticket-count">{{ item.num_tickets }}</span>
+      <h3>{{ item.name }}</h3>
+      <button class="view-button" (click)="navigateToTickets()">View</button>
+    </div>    
   }
 </div>
