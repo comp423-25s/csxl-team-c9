@@ -1,22 +1,24 @@
-<div class="course-card-container">
+<div class="container">
+  <div class="left-column">
+    <h4 style="text-align: center;">Assignments</h4>
+    <div class="grid">
   @for (item of assnConcepts().assignments; track item){
-    <div class="left-column">
           <h3>{{ item.name }}</h3>
           <p>{{ item.num_tickets }}</p>
-          <button (click)="navigateToIssues()">  clicking this needs to the issues page
-            View
-          </button>
-        </div>
+          <button class="view-button" (click)="navigateToIssues()">View</button>
   }
+</div>
+</div>
    
+<div class="right-column">
+  <h4 style="text-align: center;"> Concepts</h4>
+  <div class="grid">
   @for (item of assnConcepts().concepts; track item){
-    <div class="right-column">
         <h3>{{ item.name }}</h3>
         <p>{{ item.num_tickets }}</p>
-        <button (click)="navigateToIssues()">  clicking this needs to the issues page
-          View
-        </button>
-      </div>
+        <button class="view-button" (click)="navigateToIssues()">View</button> <!-- could make this a widget to reuse-->
 }
+</div>
+</div>
 </div>
 

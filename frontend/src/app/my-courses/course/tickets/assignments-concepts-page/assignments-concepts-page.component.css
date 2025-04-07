@@ -1,11 +1,28 @@
-.left-column {
-  flex: 1;
-  background-color: #f0f0f0;
-  padding: 20px;
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden; /* chat added this to "prevent horizontal overflow but not working*/
 }
 
+.left-column,
 .right-column {
   flex: 1;
-  background-color: #f0f0f0;
-  padding: 20px;
+  overflow: hidden;
+}
+
+.view-button {
+  background-color: #4B0082;
+  color: white;
+  border-radius: 15px;
+  padding: 10px 20px;
+  font-size: 15px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* two cols */
+  gap: 5px; 
+  justify-items: center;
+  align-items: start;
 }
