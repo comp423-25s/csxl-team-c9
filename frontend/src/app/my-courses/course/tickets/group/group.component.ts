@@ -41,4 +41,15 @@ export class GroupComponent {
   getAllAssignmentsConcepts(): Observable<TicketWrapper> {
     return this.client.get<TicketWrapper>(`/api/office-hours/issues/1`);
   }
+
+  IsOpen: { [key: number]: boolean } = {};
+
+  OpenTicket(ticketId: number): void {
+    //added for toggling opening ticket
+    this.IsOpen[ticketId] = !this.IsOpen[ticketId];
+  }
+
+  isDetailsVisible(ticketId: number): boolean {
+    return this.IsOpen[ticketId] ?? false; // is it open
+  }
 }
