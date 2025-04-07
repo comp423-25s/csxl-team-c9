@@ -1,11 +1,11 @@
 <mat-card
 [class]="
-  'assignment-card ' + (course.role !== 'Student' && 'surface-container-card')
+  'assignment-card'
 "
 appearance="outlined">
 <mat-card-header>
   <mat-card-title class="title-medium">
-    {{ item.name }}
+    {{ name }}
   </mat-card-title>
   <mat-card-subtitle class="title-small assignment-card-title"></mat-card-subtitle>
 </mat-card-header>
@@ -13,12 +13,10 @@ appearance="outlined">
     
 </mat-card-content>
 <mat-card-actions class="assignment-card-actions">
-  @if (course.role === 'Student') {
   <!-- <button mat-stroked-button color="secondary" type="submit">Details</button> -->
-  <button (click)="navigateToIssues()"
+  <!-- <button (click)=""
     mat-flat-button
     color="primary"
-    View></button>
-  }
+    View></button> -->
 </mat-card-actions>
 </mat-card>

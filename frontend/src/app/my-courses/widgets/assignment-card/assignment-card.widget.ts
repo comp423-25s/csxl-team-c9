@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { CourseSiteOverview } from '../../my-courses.model';
 
 @Component({
   selector: 'app-assignment-card',
@@ -11,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class AssignmentCardWidget {
   /** Term for the course */
-  //@Input() termId!: string;
+  @Input() name!: string;
   /** The course to show */
-  //@Input() course!: CourseSiteOverview;
+  @Input() numTickets!: number;
 }
