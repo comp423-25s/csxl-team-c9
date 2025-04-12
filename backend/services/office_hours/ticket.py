@@ -20,6 +20,7 @@ from ...models.office_hours.ticket import (
 )
 
 from ...models.office_hours.ticket import Issue
+from ...entities.office_hours.issue_entity import IssueEntity
 
 from ..openai import OpenAIService, openai_client 
 from ...models.openai_test_response import OpenAITestResponse
@@ -45,12 +46,15 @@ class OfficeHourTicketService:
     """
 
     def query_gpt(self, new_office_hours_ticket: NewOfficeHoursTicket):
+
+        all_issues: list[IssueEntity] = self._session.query(IssueEntity).all()
+
         response: OpenAITestResponse = self._openai_svc.prompt(
             f"""
                 Your job is to sort office hours tickets into categories base off of 
                 what they issue that they needed help with the possible categories are as follows:
 
-                ({[]})
+                ({', '.join(issue.to_model().name for issue in all_issues)})
 
                 If the ticket provided does not fall into any of the categories you can respond with 
                 a 1-5 word category that you believe that it should be sorted into, this category should 
@@ -65,7 +69,8 @@ class OfficeHourTicketService:
             , OpenAITestResponse)
         
         if response.new_category:
-            self._session.add(Issue(name=response.category))
+            self._session.add(IssueEntity(name=response.category))
+            self._session.commit()
 
     def __init__(self, openai_svc: Annotated[OpenAIService, Depends()], session: Session = Depends(db_session)):
         """

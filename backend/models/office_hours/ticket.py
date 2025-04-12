@@ -66,5 +66,4 @@ class Issue(BaseModel):
     This model stores the data for an assignments issues.
     """
     id: int
-    num_tickets: int
     name: str

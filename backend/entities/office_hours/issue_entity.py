@@ -20,7 +20,7 @@ class IssueEntity(EntityBase):
     """Serves as the database model schema defining the shape of the `OfficeHoursTicket` table"""
 
     # Name for the events table in the PostgreSQL database
-    __tablename__ = "office_hours__ticket"
+    __tablename__ = "issue"
 
     # Unique id for OfficeHoursTicket
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
