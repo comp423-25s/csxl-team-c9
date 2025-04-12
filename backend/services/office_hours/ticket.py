@@ -2,6 +2,7 @@
 APIs for academics for office hour tickets.
 """
 
+from typing import Annotated
 from datetime import datetime
 from fastapi import Depends
 from sqlalchemy import select
@@ -18,7 +19,7 @@ from ...models.office_hours.ticket import (
     OfficeHoursTicket,
 )
 
-from ..openai import OpenAIService 
+from ..openai import OpenAIService, openai_client 
 from ...models.openai_test_response import OpenAITestResponse
 
 from ...entities.academics.section_entity import SectionEntity
@@ -42,9 +43,7 @@ class OfficeHourTicketService:
     """
 
     def query_gpt(self, new_office_hours_ticket: NewOfficeHoursTicket):
-        ai: OpenAIService = OpenAIService()
-
-        response = ai.prompt(
+        response = self._openai_svc.prompt(
             f"""
                 Your job is to sort office hours tickets into categories base off of 
                 what they issue that they needed help with the possible categories are as follows:
@@ -63,15 +62,12 @@ class OfficeHourTicketService:
             """
             , OpenAITestResponse)
 
-
-        print(str(response))
-        ...
-
-    def __init__(self, session: Session = Depends(db_session)):
+    def __init__(self, openai_svc: Annotated[OpenAIService, Depends()], session: Session = Depends(db_session)):
         """
         Initializes the database session.
         """
-        self._session = session
+        self._session = session        
+        self._openai_svc = openai_svc
 
     def _to_oh_ticket_overview(
         self, ticket: OfficeHoursTicketEntity
@@ -301,7 +297,7 @@ class OfficeHourTicketService:
                 "You cannot create multiple tickets at once."
             )
         
-        self.query_gpt(NewOfficeHoursTicket)
+        self.query_gpt(ticket)
 
         # Create entity
         oh_ticket_entity = OfficeHoursTicketEntity.from_new_model(ticket)
