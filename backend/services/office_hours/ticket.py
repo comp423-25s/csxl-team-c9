@@ -2,7 +2,8 @@
 APIs for academics for office hour tickets.
 """
 
-from typing import Annotated
+from ...models.office_hours.ticket_type import TicketType
+from typing import Annotated, Literal
 from datetime import datetime
 from fastapi import Depends
 from sqlalchemy import select
@@ -259,15 +260,15 @@ class OfficeHourTicketService:
         # Return the changed ticket
         return self._to_oh_ticket_overview(ticket_entity)
     
-    def _create_or_store_assignment_concept(self, assignment_concept_name: str):
+    def _create_or_store_assignment_concept(self, assignment_concept_name: str, category: Literal[TicketType.ASSIGNMENT_HELP, TicketType.CONCEPTUAL_HELP], course_site_id: int):
         assignment_concept_name = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.name == assignment_concept_name).one()
 
         if not assignment_concept_name:
-            self._session.add(TicketCategoryEntity(name=assignment_concept_name))
+            self._session.add(TicketCategoryEntity(name=assignment_concept_name, category=category, course_site_id=course_site_id))
             self._session.commit()
 
     def create_ticket(
-        self, user: User, ticket: NewOfficeHoursTicket
+        self, user: User, ticket: NewOfficeHoursTicket, course_id: int
     ) -> OfficeHourTicketOverview:
         """
         Creates a new office hours ticket.
@@ -283,7 +284,7 @@ class OfficeHourTicketService:
             PermissionError: If the logged-in user is not a section member student.
 
         """
-        self._create_or_store_assignment_concept(ticket.assignment_concept_name)
+        self._create_or_store_assignment_concept(ticket.assignment_concept_name, ticket.type, course_id)
 
         # Find the IDs of the creators of the ticket
         creator_ids = [user.id]
