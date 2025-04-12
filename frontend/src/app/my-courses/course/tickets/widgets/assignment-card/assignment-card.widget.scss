@@ -7,6 +7,18 @@
     width: 268px; /* Explicit width required for text-overflow to work. */
     white-space: nowrap;
     overflow: hidden;
+    background-color: purple;
+    color: purple;
+    text-overflow: ellipsis;
+}
+
+.assignment-card-footer {
+    width: 268px; /* Explicit width required for text-overflow to work. */
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: purple;
+    color: purple;
+    position: 
     text-overflow: ellipsis;
 }
 
@@ -14,6 +26,7 @@
     display: flex;
     flex-direction: row;
     gap: 8px;
+    background-color: purple;
     justify-content: end;
     padding-top: 16px;
     padding-bottom: 16px;

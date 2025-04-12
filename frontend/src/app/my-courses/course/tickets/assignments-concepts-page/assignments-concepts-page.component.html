@@ -3,6 +3,7 @@
     <div class="left-column">
           <h3>{{ item.name }}</h3>
           <p>{{ item.num_tickets }}</p>
+          <app-assignment-card [name]= "item.name" [numTickets] = "item.num_tickets" [assignmentID] = "item.id" ></app-assignment-card>
           <button (click)="navigateToIssues()">  clicking this needs to the issues page
             View
           </button>
