@@ -21,6 +21,8 @@ __authors__ = [
     "Sadie Amato",
     "Bailey DeSouza",
     "Meghan Sun",
+    "Simon Felt",
+    "Daniel Ramsgard"
 ]
 __copyright__ = "Copyright 2024"
 __license__ = "MIT"
@@ -168,3 +170,4 @@ class OfficeHoursTicketEntity(EntityBase):
             caller=(self.caller.to_flat_model() if self.caller is not None else None),
             issue_id=self.issue_id
         )
+ 
