@@ -517,7 +517,7 @@ class OfficeHoursService:
     def get_all_issues(self, assignment_id: str):
         # get all issues associated with this input id
 
-        all_issues: list[IssueEntity] = self._session.query(IssueEntity).all()
+        all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == assignment_id).all()
 
         return {
             "issues": [issue.to_model() for issue in all_issues]
