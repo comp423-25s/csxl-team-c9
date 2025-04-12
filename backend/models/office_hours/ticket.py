@@ -55,7 +55,6 @@ class AssignmentConcept(BaseModel):
     This model stores the data for an assignment or concept
     """
     id: int
-    num_tickets: int
     name: str
     category: Literal[TicketType.ASSIGNMENT_HELP, TicketType.CONCEPTUAL_HELP]
 
@@ -68,3 +67,4 @@ class Issue(BaseModel):
     """
     id: int
     name: str
+    ticket_category_id: int

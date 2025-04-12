@@ -4,3 +4,4 @@ from .course_site_entity import CourseSiteEntity
 from .ticket_entity import OfficeHoursTicketEntity
 from .user_created_tickets_table import user_created_tickets_table
 from .issue_entity import IssueEntity
+from .ticket_category_entity import TicektCategoryEntity
