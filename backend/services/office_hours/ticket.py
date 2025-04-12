@@ -18,6 +18,9 @@ from ...models.office_hours.ticket import (
     OfficeHoursTicket,
 )
 
+from ..openai import OpenAIService 
+from ...models.openai_test_response import OpenAITestResponse
+
 from ...entities.academics.section_entity import SectionEntity
 from ...entities.office_hours import (
     CourseSiteEntity,
@@ -37,6 +40,32 @@ class OfficeHourTicketService:
     """
     Service that performs all of the actions for office hour tickets.
     """
+
+    def query_gpt(self, new_office_hours_ticket: NewOfficeHoursTicket):
+        ai: OpenAIService = OpenAIService()
+
+        response = ai.prompt(
+            f"""
+                Your job is to sort office hours tickets into categories base off of 
+                what they issue that they needed help with the possible categories are as follows:
+
+                ({[]})
+
+                If the ticket provided does not fall into any of the categories you can respond with 
+                a 1-5 word category that you believe that it should be sorted into, this category should 
+                be relatively broad but still specific enough to have meaning. Respond with a bool to indicate 
+                whether or not you created a new category, and then also respond with the category that the 
+                ticket should be sorted into.
+            """
+            ,
+            f"""
+                Ticket: ({new_office_hours_ticket.description})
+            """
+            , OpenAITestResponse)
+
+
+        print(str(response))
+        ...
 
     def __init__(self, session: Session = Depends(db_session)):
         """
@@ -271,6 +300,8 @@ class OfficeHourTicketService:
             raise CoursePermissionException(
                 "You cannot create multiple tickets at once."
             )
+        
+        self.query_gpt(NewOfficeHoursTicket)
 
         # Create entity
         oh_ticket_entity = OfficeHoursTicketEntity.from_new_model(ticket)
