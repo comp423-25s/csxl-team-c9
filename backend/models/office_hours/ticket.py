@@ -57,6 +57,7 @@ class AssignmentConcept(BaseModel):
     id: int
     name: str
     category: Literal[TicketType.ASSIGNMENT_HELP, TicketType.CONCEPTUAL_HELP]
+    course_site_id: int
 
 
 class Issue(BaseModel):

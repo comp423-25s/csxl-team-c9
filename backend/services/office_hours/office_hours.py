@@ -30,6 +30,9 @@ from ...entities.office_hours import (
     OfficeHoursTicketEntity,
     IssueEntity,
 )
+
+from ...entities.office_hours.ticket_category_entity import TicketCategoryEntity
+
 from ...entities.office_hours.user_created_tickets_table import (
     user_created_tickets_table,
 )
@@ -494,30 +497,17 @@ class OfficeHoursService:
                 "You cannot access office hours for a class you are not enrolled in."
             )
         
-    def get_all_assignments_concepts(self):
-        num_assignments = 10
-        num_concepts = 7
-        num_items_possible = [1,2,3,4,5,6,7]
+    def get_all_assignments_concepts(self, course_id: int):
+        assignments = []
+        concepts = []
 
-        def create_dummy_assignment(indentifier: int):
-            return AssignmentConcept(
-                id=indentifier,
-                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
-                name=f'Ex-{indentifier}',
-                category=TicketType.ASSIGNMENT_HELP
-            )
+        data: list[TicketCategoryEntity] = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.id == course_id).all()
 
-        def create_dummy_concept(indentifier: int):
-            return AssignmentConcept(
-                id=indentifier,
-                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
-                name=f'Concept-{indentifier}',
-                category=TicketType.CONCEPTUAL_HELP
-            )
-            
-
-        assignments = [create_dummy_assignment(i) for i in range(num_assignments)]
-        concepts = [create_dummy_concept(i) for i in range(num_concepts)]
+        for item in data:
+            if item.category == TicketType.ASSIGNMENT_HELP.value:
+                assignments.append(item.to_model())
+            else:
+                concepts.append(item.to_model())
 
         return {
             "assignments": assignments,

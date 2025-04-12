@@ -1,6 +1,6 @@
 """Definition of SQLAlchemy table-backed object mapping entity for Office Hour tickets."""
 
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from ...models.office_hours.ticket import Issue, AssignmentConcept
 
@@ -31,6 +31,11 @@ class TicketCategoryEntity(EntityBase):
     # Category of the help needed
     category: Mapped[int] = mapped_column(Integer, nullable=False)
 
+    # Ties the ticket category to a course
+    course_site_id: Mapped[int] = mapped_column(
+        ForeignKey("course_site.id"), nullable=False
+    )
+
     # Number of tickets
     # num_tickets: Mapped[int] = mapped_column(Integer, nullable=False) -> this is derived
 
@@ -47,7 +52,8 @@ class TicketCategoryEntity(EntityBase):
         return cls(
             id=model.id,
             name=model.name,
-            categoty=model.category
+            categoty=model.category,
+            course_site_id=model.course_site_id
         )
 
     def to_model(self) -> AssignmentConcept:
@@ -60,5 +66,6 @@ class TicketCategoryEntity(EntityBase):
         return AssignmentConcept(
             id=self.id,
             name=self.name,
-            category=self.category
+            category=self.category,
+            course_site_id=self.course_site_id
         )
