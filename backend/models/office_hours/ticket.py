@@ -27,6 +27,7 @@ class NewOfficeHoursTicket(BaseModel):
     description: str
     type: TicketType
     office_hours_id: int
+    assignment_concept_name: str | None = None
 
 
 class OfficeHoursTicket(NewOfficeHoursTicket):

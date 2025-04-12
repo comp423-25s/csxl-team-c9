@@ -31,6 +31,9 @@ from ...entities.office_hours import (
     OfficeHoursEntity,
     OfficeHoursTicketEntity,
 )
+
+from ...entities.office_hours.ticket_category_entity import TicketCategoryEntity
+
 from ...entities.academics.section_member_entity import SectionMemberEntity
 from ..exceptions import CoursePermissionException, ResourceNotFoundException
 from ...entities.office_hours import user_created_tickets_table
@@ -48,7 +51,11 @@ class OfficeHourTicketService:
     """
 
     def query_gpt(self, office_hours_ticket: OfficeHoursTicket) -> int:
-        all_issues: list[IssueEntity] = self._session.query(IssueEntity).all()
+        # first get the assignment id
+        single_issue: IssueEntity = self._session.query(IssueEntity).filter(IssueEntity.id == office_hours_ticket.issue_id).one()
+
+        # get all issues that share the assignment id
+        all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == single_issue.ticket_category_id).all()
 
         response: OpenAITestResponse = self._openai_svc.prompt(
             f"""
@@ -251,6 +258,13 @@ class OfficeHourTicketService:
 
         # Return the changed ticket
         return self._to_oh_ticket_overview(ticket_entity)
+    
+    def _create_or_store_assignment_concept(self, assignment_concept_name: str):
+        assignment_concept_name = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.name == assignment_concept_name).one()
+
+        if not assignment_concept_name:
+            self._session.add(TicketCategoryEntity(name=assignment_concept_name))
+            self._session.commit()
 
     def create_ticket(
         self, user: User, ticket: NewOfficeHoursTicket
@@ -269,6 +283,8 @@ class OfficeHourTicketService:
             PermissionError: If the logged-in user is not a section member student.
 
         """
+        self._create_or_store_assignment_concept(ticket.assignment_concept_name)
+
         # Find the IDs of the creators of the ticket
         creator_ids = [user.id]
         # TODO: Reimplement group tickets
