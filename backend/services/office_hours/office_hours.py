@@ -21,7 +21,7 @@ from ...models.academics.my_courses import (
     OfficeHourGetHelpOverview,
 )
 from ...models.office_hours.office_hours import OfficeHours, NewOfficeHours, MoveTicket
-from ...models.office_hours.ticket import TicketState, AssignmentConcept, AssignmentIssue, OfficeHoursTicket
+from ...models.office_hours.ticket import TicketState, AssignmentConcept, Issue, OfficeHoursTicket
 from ...entities.entity_base import EntityBase
 from ...entities.academics.section_entity import SectionEntity
 from ...entities.office_hours import (
@@ -530,7 +530,7 @@ class OfficeHoursService:
         num_items_possible = [1,2,3,4,5,6,7]
 
         def create_dummy_issue(indentifier: int):
-            return AssignmentIssue(
+            return Issue(
                 id=indentifier,
                 num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
                 name=f'Issue-{indentifier}'
