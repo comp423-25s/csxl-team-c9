@@ -45,8 +45,7 @@ class OfficeHourTicketService:
     Service that performs all of the actions for office hour tickets.
     """
 
-    def query_gpt(self, new_office_hours_ticket: NewOfficeHoursTicket):
-
+    def query_gpt(self, office_hours_ticket: OfficeHoursTicket) -> int:
         all_issues: list[IssueEntity] = self._session.query(IssueEntity).all()
 
         response: OpenAITestResponse = self._openai_svc.prompt(
@@ -64,13 +63,21 @@ class OfficeHourTicketService:
             """
             ,
             f"""
-                Ticket: ({new_office_hours_ticket.description})
+                Ticket: ({office_hours_ticket.description})
             """
             , OpenAITestResponse)
         
         if response.new_category:
-            self._session.add(IssueEntity(name=response.category))
+            issue = IssueEntity(name=response.category)
+            self._session.add(issue)
             self._session.commit()
+            issue_id = issue.id
+        else:
+            issue = self._session.query(IssueEntity).filter_by(name=response.category).one()
+            issue_id = issue.id
+
+        return issue_id
+
 
     def __init__(self, openai_svc: Annotated[OpenAIService, Depends()], session: Session = Depends(db_session)):
         """
@@ -199,7 +206,7 @@ class OfficeHourTicketService:
             OfficeHourTicketOverview
         """
         # Attempt to access the ticket
-        ticket_entity = self._session.get(OfficeHoursTicketEntity, ticket_id)
+        ticket_entity = self._session.get(OfficeHoursTicketEntity, ticket_id)        
 
         if not ticket_entity:
             raise ResourceNotFoundException(f"Ticket not found with ID: {ticket_id}")
@@ -208,6 +215,9 @@ class OfficeHourTicketService:
             raise CoursePermissionException(
                 "Cannot close a ticket that has not been called."
             )
+        
+        issue_id: int = self.query_gpt(ticket_entity.to_model())
+        ticket_entity.issue_id = issue_id
 
         # Create query off of the member query for just the members matching
         # with the current user (used to determine permissions)
@@ -232,7 +242,7 @@ class OfficeHourTicketService:
 
         # Close the ticket
         ticket_entity.closed_at = datetime.now()
-        ticket_entity.state = TicketState.CLOSED
+        ticket_entity.state = TicketState.CLOSED        
 
         # Save changes
         self._session.commit()
@@ -306,8 +316,6 @@ class OfficeHourTicketService:
             raise CoursePermissionException(
                 "You cannot create multiple tickets at once."
             )
-        
-        self.query_gpt(ticket)
 
         # Create entity
         oh_ticket_entity = OfficeHoursTicketEntity.from_new_model(ticket)
