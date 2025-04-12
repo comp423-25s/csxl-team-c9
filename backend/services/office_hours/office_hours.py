@@ -28,6 +28,7 @@ from ...entities.office_hours import (
     CourseSiteEntity,
     OfficeHoursEntity,
     OfficeHoursTicketEntity,
+    IssueEntity,
 )
 from ...entities.office_hours.user_created_tickets_table import (
     user_created_tickets_table,
@@ -526,20 +527,10 @@ class OfficeHoursService:
     def get_all_issues(self, assignment_id: str):
         # get all issues associated with this input id
 
-        num_issues = 10
-        num_items_possible = [1,2,3,4,5,6,7]
-
-        def create_dummy_issue(indentifier: int):
-            return Issue(
-                id=indentifier,
-                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
-                name=f'Issue-{indentifier}'
-            )
-
-        issues = [create_dummy_issue(i) for i in range(num_issues)]
+        all_issues: list[IssueEntity] = self._session.query(IssueEntity).all()
 
         return {
-            "issues": issues
+            "issues": [issue.to_model() for issue in all_issues]
         }
 
     def get_all_tickets_by_issue(self, issue_id: str):
