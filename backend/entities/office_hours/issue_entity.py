@@ -29,7 +29,7 @@ class IssueEntity(EntityBase):
     name: Mapped[str] = mapped_column(String, nullable=False)
 
     # Number of tickets
-    num_tickets: Mapped[int] = mapped_column(Integer, nullable=False)
+    # num_tickets: Mapped[int] = mapped_column(Integer, nullable=False) -> this is derived
 
     @classmethod
     def from_model(cls, model: Issue) -> Self:
@@ -55,6 +55,5 @@ class IssueEntity(EntityBase):
         """
         return Issue(
             id=self.id,
-            name=self.name,
-            num_tickets=self.num_tickets
+            name=self.name
         )
