@@ -264,7 +264,7 @@ class OfficeHourTicketService:
         assignment_concept_name = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.name == assignment_concept_name).one_or_none()
 
         if not assignment_concept_name:
-            self._session.add(TicketCategoryEntity(name=assignment_concept_name, category=category, course_site_id=course_site_id))
+            self._session.add(TicketCategoryEntity(name=assignment_concept_name, category=category.value, course_site_id=course_site_id))
             self._session.commit()
 
     def create_ticket(
