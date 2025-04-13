@@ -218,7 +218,6 @@ comp_110_queued_ticket = OfficeHoursTicket(
     caller_notes="",
     office_hours_id=comp_110_current_office_hours.id,
     caller_id=None,
-    assignment_concept_name="Ex01"
 )
 comp_110_cancelled_ticket = OfficeHoursTicket(
     id=2,
@@ -232,7 +231,6 @@ comp_110_cancelled_ticket = OfficeHoursTicket(
     caller_notes="",
     office_hours_id=comp_110_current_office_hours.id,
     caller_id=None,
-    assignment_concept_name="Docker"
 )
 comp_110_called_ticket = OfficeHoursTicket(
     id=3,
@@ -246,7 +244,6 @@ comp_110_called_ticket = OfficeHoursTicket(
     caller_notes="",
     office_hours_id=comp_110_current_office_hours.id,
     caller_id=section_data.comp110_instructor.id,
-    assignment_concept_name="Docker"
 )
 comp_110_closed_ticket = OfficeHoursTicket(
     id=4,
@@ -394,6 +391,7 @@ new_ticket = NewOfficeHoursTicket(
     description="Help me!",
     type=TicketType.ASSIGNMENT_HELP,
     office_hours_id=comp_110_current_office_hours.id,
+    assignment_concept_name="Ex01"
 )
 
 new_course_site = NewCourseSite(

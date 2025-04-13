@@ -39,6 +39,7 @@ import {
   NewOfficeHoursRecurrencePattern
 } from './my-courses.model';
 import { Observable, map } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 /** Enum for days of the week */
 export enum Weekday {
@@ -219,9 +220,12 @@ export class MyCoursesService {
    * @param ticketDraft: Drafted ticket object to create
    * @returns {Observable<TicketDetails>}
    */
-  createTicket(ticketDraft: TicketDraft): Observable<OfficeHourTicketOverview> {
+  createTicket(
+    ticketDraft: TicketDraft,
+    courseId: string
+  ): Observable<OfficeHourTicketOverview> {
     return this.http.post<OfficeHourTicketOverview>(
-      'api/office-hours/ticket/',
+      `api/office-hours/ticket/${courseId}`,
       ticketDraft
     );
   }
