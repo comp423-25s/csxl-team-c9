@@ -68,7 +68,8 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
     conceptsSection: new FormControl('', [Validators.required]),
     attemptSection: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
-    link: new FormControl('', [Validators.required])
+    link: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required])
   });
 
   courseSiteId: string;
@@ -149,7 +150,8 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
         ? this.ticketForm.controls['assignmentSection'].value !== '' &&
           this.ticketForm.controls['codeSection'].value !== '' &&
           this.ticketForm.controls['conceptsSection'].value !== '' &&
-          this.ticketForm.controls['attemptSection'].value !== ''
+          this.ticketForm.controls['attemptSection'].value !== '' &&
+          this.ticketForm.controls['name'].value !== ''
         : this.ticketForm.controls['description'].value !== '';
 
     let linkFieldValid =
@@ -180,13 +182,17 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
     if (this.ticketForm.controls['type'].value === 0) {
       form_description =
         '**Conceptual Question**:  \n' +
-        (this.ticketForm.controls['description'].value ?? '');
+        (this.ticketForm.controls['description'].value ?? '') +
+        '  \n  \n**Concept Name**:  \n' +
+        (this.ticketForm.controls['name'].value ?? '');
     } else {
       // Concatenates form description together and adds in new line characters
       // NOTE: Two spaces in front of \n is required.
       form_description =
         '**Assignment Part**:  \n' +
         (this.ticketForm.controls['assignmentSection'].value ?? '') +
+        '  \n  \n**Assignment Name**:  \n' +
+        (this.ticketForm.controls['name'].value ?? '') +
         '  \n  \n**Goal**:  \n' +
         (this.ticketForm.controls['codeSection'].value ?? '') +
         '  \n  \n**Concepts**:  \n' +
