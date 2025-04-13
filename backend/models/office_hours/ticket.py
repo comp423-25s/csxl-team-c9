@@ -46,7 +46,7 @@ class OfficeHoursTicket(NewOfficeHoursTicket):
     have_concerns: bool = False
     caller_notes: str = ""
     caller_id: int | None
-    issue_id: int
+    issue_id: int | None = None
 
 
 class AssignmentConcept(BaseModel):
