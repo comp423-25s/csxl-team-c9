@@ -81,7 +81,7 @@ class OfficeHoursTicketEntity(EntityBase):
     )
 
     # Add foriegn key for issue_id
-    issue_id: Mapped[int] = mapped_column(ForeignKey('issue.id'), nullable=False)
+    issue_id: Mapped[int] = mapped_column(ForeignKey('issue.id'), nullable=True)
 
     @classmethod
     def from_new_model(cls, model: NewOfficeHoursTicket) -> Self:

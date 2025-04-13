@@ -26,7 +26,7 @@ class TicketCategoryEntity(EntityBase):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
 
     # Name of issue
-    name: Mapped[str] = mapped_column(String, nullable=False)
+    name: Mapped[str] = mapped_column(String, nullable=True)
 
     # Category of the help needed
     category: Mapped[int] = mapped_column(Integer, nullable=False)

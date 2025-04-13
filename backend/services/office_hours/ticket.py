@@ -261,6 +261,7 @@ class OfficeHourTicketService:
         return self._to_oh_ticket_overview(ticket_entity)
     
     def _create_or_store_assignment_concept(self, assignment_concept_name: str, category: Literal[TicketType.ASSIGNMENT_HELP, TicketType.CONCEPTUAL_HELP], course_site_id: int):
+        print("name: " + assignment_concept_name)
         assignment_concept_name = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.name == assignment_concept_name).one_or_none()
 
         if not assignment_concept_name:

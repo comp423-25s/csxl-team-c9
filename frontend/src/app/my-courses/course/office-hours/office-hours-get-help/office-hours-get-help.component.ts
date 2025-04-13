@@ -69,7 +69,7 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
     attemptSection: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     link: new FormControl('', [Validators.required]),
-    name: new FormControl('', [Validators.required])
+    assignment_concept_name: new FormControl('', [Validators.required])
   });
 
   courseSiteId: string;
@@ -151,7 +151,7 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
           this.ticketForm.controls['codeSection'].value !== '' &&
           this.ticketForm.controls['conceptsSection'].value !== '' &&
           this.ticketForm.controls['attemptSection'].value !== '' &&
-          this.ticketForm.controls['name'].value !== ''
+          this.ticketForm.controls['assignment_concept_name'].value !== ''
         : this.ticketForm.controls['description'].value !== '';
 
     let linkFieldValid =
@@ -184,7 +184,7 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
         '**Conceptual Question**:  \n' +
         (this.ticketForm.controls['description'].value ?? '') +
         '  \n  \n**Concept Name**:  \n' +
-        (this.ticketForm.controls['name'].value ?? '');
+        (this.ticketForm.controls['assignment_concept_name'].value ?? '');
     } else {
       // Concatenates form description together and adds in new line characters
       // NOTE: Two spaces in front of \n is required.
@@ -192,7 +192,7 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
         '**Assignment Part**:  \n' +
         (this.ticketForm.controls['assignmentSection'].value ?? '') +
         '  \n  \n**Assignment Name**:  \n' +
-        (this.ticketForm.controls['name'].value ?? '') +
+        (this.ticketForm.controls['assignment_concept_name'].value ?? '') +
         '  \n  \n**Goal**:  \n' +
         (this.ticketForm.controls['codeSection'].value ?? '') +
         '  \n  \n**Concepts**:  \n' +
@@ -212,7 +212,9 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
     let ticketDraft: TicketDraft = {
       office_hours_id: this.ohEventId,
       description: form_description,
-      type: form_type
+      type: form_type,
+      assignment_concept_name:
+        this.ticketForm.controls['assignment_concept_name'].value ?? ''
     };
 
     this.myCoursesService
