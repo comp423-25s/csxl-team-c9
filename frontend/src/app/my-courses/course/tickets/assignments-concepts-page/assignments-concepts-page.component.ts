@@ -52,7 +52,7 @@ export class AssignmentsConceptsPageComponent {
 
   getAllAssignmentsConcepts(): Observable<AssignmentsConcepts> {
     return this.client.get<AssignmentsConcepts>(
-      `/api/office-hours/assignments-concepts`
+      `/api/office-hours/assignments-concepts/${this.courseSiteId}`
     );
   }
 }

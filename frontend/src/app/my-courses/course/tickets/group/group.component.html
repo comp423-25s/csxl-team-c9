@@ -1,5 +1,7 @@
 <!-- need to remove nav bar somehow-->
  <div class="container">
+<div class="left-column">
+  <div class="queue-pane">
 @for (item of tickets(); track item){
     <div class="ticket">
       @if(item.type == 0){
@@ -30,6 +32,7 @@
         V
       </button>}
 </div>
-
 }
+</div>
+</div>
 </div>
