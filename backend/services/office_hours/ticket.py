@@ -81,7 +81,7 @@ class OfficeHourTicketService:
             , OpenAITestResponse)
         
         if response.new_category:
-            issue = IssueEntity(name=response.category)
+            issue = IssueEntity(name=response.category, ticket_category_id=office_hours_ticket.ticket_category_id)
             self._session.add(issue)
             self._session.commit()
             issue_id = issue.id
@@ -267,8 +267,14 @@ class OfficeHourTicketService:
         new_item = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.name == assignment_concept_name).one_or_none()
 
         if not new_item:
-            self._session.add(TicketCategoryEntity(name=assignment_concept_name, category=category, course_site_id=course_site_id))
+            ticket_cat = TicketCategoryEntity(name=assignment_concept_name, category=category, course_site_id=course_site_id)
+            self._session.add(ticket_cat)
             self._session.commit()
+            id_to_ret = ticket_cat.id
+        else:
+            id_to_ret = new_item.id
+
+        return id_to_ret
 
     def create_ticket(
         self, user: User, ticket: NewOfficeHoursTicket, course_id: int
@@ -287,7 +293,7 @@ class OfficeHourTicketService:
             PermissionError: If the logged-in user is not a section member student.
 
         """
-        self._create_or_store_assignment_concept(ticket.assignment_concept_name, ticket.type, course_id)
+        ticket_category_id_ret = self._create_or_store_assignment_concept(ticket.assignment_concept_name, ticket.type, course_id)
 
         # Find the IDs of the creators of the ticket
         creator_ids = [user.id]
@@ -341,6 +347,7 @@ class OfficeHourTicketService:
 
         # Create entity
         oh_ticket_entity = OfficeHoursTicketEntity.from_new_model(ticket)
+        oh_ticket_entity.ticket_category_id = ticket_category_id_ret
 
         # Add new object to table and commit changes
         self._session.add(oh_ticket_entity)

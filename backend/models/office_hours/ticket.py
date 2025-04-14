@@ -28,6 +28,7 @@ class NewOfficeHoursTicket(BaseModel):
     type: TicketType
     office_hours_id: int
     assignment_concept_name: str | None = None
+    ticket_category_id: str | None = None
 
 
 class OfficeHoursTicket(NewOfficeHoursTicket):
@@ -47,6 +48,7 @@ class OfficeHoursTicket(NewOfficeHoursTicket):
     caller_notes: str = ""
     caller_id: int | None
     issue_id: int | None = None
+    ticket_category_id: str | None = None
 
 
 class AssignmentConcept(BaseModel):
@@ -67,6 +69,6 @@ class Issue(BaseModel):
 
     This model stores the data for an assignments issues.
     """
-    id: int
-    name: str
-    ticket_category_id: int
+    id: int | None
+    name: str | None
+    ticket_category_id: int | None

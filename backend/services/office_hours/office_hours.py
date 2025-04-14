@@ -503,8 +503,6 @@ class OfficeHoursService:
 
         data: list[TicketCategoryEntity] = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.course_site_id == course_id).all()
 
-        print("asdasdasdadasdasdasadasdasd" + str(data))
-
         for item in data:
             if item.category == TicketType.ASSIGNMENT_HELP.value:
                 assignments.append(item.to_model())
@@ -518,9 +516,8 @@ class OfficeHoursService:
 
     def get_all_issues(self, assignment_id: str):
         # get all issues associated with this input id
-
-        all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == assignment_id).all()
-
+        all_issues: list[IssueEntity] = self._session.query(IssueEntity).all()
+        
         return {
             "issues": [issue.to_model() for issue in all_issues]
         }
