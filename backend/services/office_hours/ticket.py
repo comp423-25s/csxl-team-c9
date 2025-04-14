@@ -219,7 +219,7 @@ class OfficeHourTicketService:
             OfficeHourTicketOverview
         """
         # Attempt to access the ticket
-        ticket_entity = self._session.get(OfficeHoursTicketEntity, ticket_id)        
+        ticket_entity = self._session.get(OfficeHoursTicketEntity, ticket_id)
 
         if not ticket_entity:
             raise ResourceNotFoundException(f"Ticket not found with ID: {ticket_id}")
@@ -295,6 +295,8 @@ class OfficeHourTicketService:
         """
         ticket_category_id_ret = self._create_or_store_assignment_concept(ticket.assignment_concept_name, ticket.type, course_id)
 
+        print("TICKET SHIW: " + str(ticket_category_id_ret))
+
         # Find the IDs of the creators of the ticket
         creator_ids = [user.id]
         # TODO: Reimplement group tickets
@@ -346,8 +348,8 @@ class OfficeHourTicketService:
             )
 
         # Create entity
-        oh_ticket_entity = OfficeHoursTicketEntity.from_new_model(ticket)
-        oh_ticket_entity.ticket_category_id = ticket_category_id_ret
+        ticket.ticket_category_id = ticket_category_id_ret
+        oh_ticket_entity = OfficeHoursTicketEntity.from_new_model(ticket)        
 
         # Add new object to table and commit changes
         self._session.add(oh_ticket_entity)
