@@ -236,7 +236,7 @@ comp_110_cancelled_ticket = OfficeHoursTicket(
 )
 comp_110_called_ticket = OfficeHoursTicket(
     id=3,
-    description="I do not know how to exit vim. Do I need to burn my PC?",
+    description="My docker container will not open",
     type=TicketType.CONCEPTUAL_HELP,
     state=TicketState.CALLED,
     created_at=datetime.now() - timedelta(minutes=1),
@@ -246,7 +246,7 @@ comp_110_called_ticket = OfficeHoursTicket(
     caller_notes="",
     office_hours_id=comp_110_current_office_hours.id,
     caller_id=section_data.comp110_instructor.id,
-    assignment_concept_name="Vim"
+    assignment_concept_name="Docker"
 )
 comp_110_closed_ticket = OfficeHoursTicket(
     id=4,
@@ -351,35 +351,35 @@ def insert_fake_data(session: Session):
 
     session.commit()
 
-    # Step 4: Add tickets to database
+    # # Step 4: Add tickets to database
 
-    for ticket in oh_tickets:
-        ticket_entity = OfficeHoursTicketEntity.from_model(ticket)
-        session.add(ticket_entity)
+    # for ticket in oh_tickets:
+    #     ticket_entity = OfficeHoursTicketEntity.from_model(ticket)
+    #     session.add(ticket_entity)
 
-    reset_table_id_seq(
-        session,
-        OfficeHoursTicketEntity,
-        OfficeHoursTicketEntity.id,
-        len(oh_tickets) + 1,
-    )
+    # reset_table_id_seq(
+    #     session,
+    #     OfficeHoursTicketEntity,
+    #     OfficeHoursTicketEntity.id,
+    #     len(oh_tickets) + 1,
+    # )
 
-    session.commit()
+    # session.commit()
 
-    # Step 5: Add users as ticket creators
-    for pairing in ticket_user_pairings:
-        for ticket, user_ids in pairing:
-            for user_id in user_ids:
-                session.execute(
-                    user_created_tickets_table.insert().values(
-                        {
-                            "ticket_id": ticket.id,
-                            "member_id": user_id,
-                        }
-                    )
-                )
+    # # Step 5: Add users as ticket creators
+    # for pairing in ticket_user_pairings:
+    #     for ticket, user_ids in pairing:
+    #         for user_id in user_ids:
+    #             session.execute(
+    #                 user_created_tickets_table.insert().values(
+    #                     {
+    #                         "ticket_id": ticket.id,
+    #                         "member_id": user_id,
+    #                     }
+    #                 )
+    #             )
 
-    session.commit()
+    # session.commit()
 
 
 @pytest.fixture(autouse=True)
