@@ -526,8 +526,22 @@ class OfficeHoursService:
         # get all issues associated with this input id
         all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == assignment_id).all()    
         
+        issues = []
+
+        for issue in all_issues:
+            issue_count = self._session.query(OfficeHoursTicketEntity.issue_id).filter(
+                OfficeHoursTicketEntity.issue_id == issue.id
+            ).all()
+
+            issue_model = issue.to_model()
+            issue_model.num_tickets = len(issue_count)
+
+            issues.append(issue_model)
+
+            
+
         return {
-            "issues": [issue.to_model() for issue in all_issues]
+            "issues": issues
         }
 
     def get_all_tickets_by_issue(self, issue_id: str):
