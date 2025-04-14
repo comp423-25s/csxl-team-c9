@@ -504,10 +504,18 @@ class OfficeHoursService:
         data: list[TicketCategoryEntity] = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.course_site_id == course_id).all()
 
         for item in data:
+            issue_count = self._session.query(IssueEntity.ticket_category_id).filter(
+                IssueEntity.ticket_category_id == item.id
+            ).all()
+
+
+            item_model = item.to_model()
+            item_model.num_issues = len(issue_count)
+
             if item.category == TicketType.ASSIGNMENT_HELP.value:
-                assignments.append(item.to_model())
+                assignments.append(item_model)
             else:
-                concepts.append(item.to_model())
+                concepts.append(item_model)
 
         return {
             "assignments": assignments,

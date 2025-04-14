@@ -295,7 +295,6 @@ class OfficeHourTicketService:
         """
         ticket_category_id_ret = self._create_or_store_assignment_concept(ticket.assignment_concept_name, ticket.type, course_id)
 
-        print("TICKET SHIW: " + str(ticket_category_id_ret))
 
         # Find the IDs of the creators of the ticket
         creator_ids = [user.id]

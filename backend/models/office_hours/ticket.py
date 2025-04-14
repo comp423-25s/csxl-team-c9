@@ -61,6 +61,7 @@ class AssignmentConcept(BaseModel):
     name: str
     category: Literal[TicketType.ASSIGNMENT_HELP, TicketType.CONCEPTUAL_HELP]
     course_site_id: int
+    num_issues: int | None = None
 
 
 class Issue(BaseModel):
@@ -72,3 +73,4 @@ class Issue(BaseModel):
     id: int | None
     name: str | None
     ticket_category_id: int | None
+    num_tickets: int | None = None
