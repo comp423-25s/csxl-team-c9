@@ -8,6 +8,7 @@ import {
   AssignmentsConcepts
 } from 'src/app/my-courses/my-courses.model';
 import { Router } from '@angular/router';
+import { consumerPollProducersForChange } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-assignments-concepts-page',
@@ -29,10 +30,13 @@ export class AssignmentsConceptsPageComponent {
     concepts: []
   });
 
+  length = signal<number>(0);
+
   ngOnInit() {
     this.getAllAssignmentsConcepts().subscribe((data: AssignmentsConcepts) => {
       console.log(data);
       this.assnConcepts.set(data);
+      this.length.set(data.concepts.length);
     });
   }
   courseSiteId: string;

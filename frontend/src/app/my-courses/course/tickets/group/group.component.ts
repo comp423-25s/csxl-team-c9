@@ -40,7 +40,7 @@ export class GroupComponent {
 
   getAllAssignmentsConcepts(): Observable<TicketWrapper> {
     return this.client.get<TicketWrapper>(
-      `/api/office-hours/issues/${this.courseSiteId}` // this could be issue id or the course id need to check
+      `/api/office-hours/issues/${this.courseSiteId}`
     );
   }
 

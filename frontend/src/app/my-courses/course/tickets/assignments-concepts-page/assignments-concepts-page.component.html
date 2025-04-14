@@ -4,7 +4,7 @@
     <div class="grid">
   @for (item of assnConcepts().assignments; track item){
     <div class="grid-item">
-      <span class="ticket-count">{{ item.num_tickets }}</span>
+      <span class="ticket-count">{{ length() }}</span>
       <h3>{{ item.name }}</h3>
       <button class="view-button" (click)="navigateToIssues()">View</button>
     </div>    
@@ -17,7 +17,7 @@
   <div class="grid">
   @for (item of assnConcepts().concepts; track item){
     <div class="grid-item">
-      <span class="ticket-count">{{ item.num_tickets }}</span>
+      <span class="ticket-count">{{ length() }}</span>
       <h3>{{ item.name }}</h3>
       <button class="view-button" (click)="navigateToIssues()">View</button>
     </div>    
