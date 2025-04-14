@@ -32,7 +32,7 @@ class IssueEntity(EntityBase):
     ticket_category_id: Mapped[int] = mapped_column(
         Integer,
         ForeignKey("ticket_category.id"),  # <- foreign key reference
-        nullable=False
+        nullable=True
     )
 
     # Number of tickets

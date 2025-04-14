@@ -501,7 +501,9 @@ class OfficeHoursService:
         assignments = []
         concepts = []
 
-        data: list[TicketCategoryEntity] = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.id == course_id).all()
+        data: list[TicketCategoryEntity] = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.course_site_id == course_id).all()
+
+        print("asdasdasdadasdasdasadasdasd" + str(data))
 
         for item in data:
             if item.category == TicketType.ASSIGNMENT_HELP.value:

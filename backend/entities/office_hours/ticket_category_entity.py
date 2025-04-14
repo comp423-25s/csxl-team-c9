@@ -3,10 +3,13 @@
 from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from ...models.office_hours.ticket import Issue, AssignmentConcept
+from ...models.office_hours.ticket_type import TicketType
+from typing import Literal
 
 
 from ..entity_base import EntityBase
 from typing import Self
+from sqlalchemy import Enum as SQLAlchemyEnum
 
 __authors__ = [
     "Simon Augustus Felt (GoValuate)",
@@ -29,7 +32,7 @@ class TicketCategoryEntity(EntityBase):
     name: Mapped[str] = mapped_column(String, nullable=True)
 
     # Category of the help needed
-    category: Mapped[int] = mapped_column(Integer, nullable=False)
+    category: Mapped[TicketType] = mapped_column(SQLAlchemyEnum(TicketType), nullable=False)
 
     # Ties the ticket category to a course
     course_site_id: Mapped[int] = mapped_column(

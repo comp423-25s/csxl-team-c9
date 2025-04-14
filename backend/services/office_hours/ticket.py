@@ -53,10 +53,13 @@ class OfficeHourTicketService:
 
     def query_gpt(self, office_hours_ticket: OfficeHoursTicket) -> int:
         # first get the assignment id
-        single_issue: IssueEntity = self._session.query(IssueEntity).filter(IssueEntity.id == office_hours_ticket.issue_id).one()
+        single_issue: IssueEntity = self._session.query(IssueEntity).filter(IssueEntity.id == office_hours_ticket.issue_id).one_or_none()
 
-        # get all issues that share the assignment id
-        all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == single_issue.ticket_category_id).all()
+        if single_issue:
+            # get all issues that share the assignment id
+            all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == single_issue.ticket_category_id).all()
+        else:
+            all_issues = []
 
         response: OpenAITestResponse = self._openai_svc.prompt(
             f"""
@@ -260,12 +263,11 @@ class OfficeHourTicketService:
         # Return the changed ticket
         return self._to_oh_ticket_overview(ticket_entity)
     
-    def _create_or_store_assignment_concept(self, assignment_concept_name: str, category: Literal[TicketType.ASSIGNMENT_HELP, TicketType.CONCEPTUAL_HELP], course_site_id: int):
-        print("name: " + assignment_concept_name)
-        assignment_concept_name = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.name == assignment_concept_name).one_or_none()
+    def _create_or_store_assignment_concept(self, assignment_concept_name: str, category: TicketType, course_site_id: int):        
+        new_item = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.name == assignment_concept_name).one_or_none()
 
-        if not assignment_concept_name:
-            self._session.add(TicketCategoryEntity(name=assignment_concept_name, category=category.value, course_site_id=course_site_id))
+        if not new_item:
+            self._session.add(TicketCategoryEntity(name=assignment_concept_name, category=category, course_site_id=course_site_id))
             self._session.commit()
 
     def create_ticket(

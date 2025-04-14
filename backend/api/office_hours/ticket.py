@@ -82,5 +82,4 @@ def new_oh_ticket(
     Returns:
         OfficeHoursTicketDetails: OH Ticket created
     """
-    print("YOUR MOM GAY: " + str(ticket))
     return oh_ticket_svc.create_ticket(subject, ticket, course_id)
