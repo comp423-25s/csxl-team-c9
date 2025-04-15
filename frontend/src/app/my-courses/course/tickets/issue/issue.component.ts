@@ -44,6 +44,8 @@ export class IssueComponent {
   }
 
   getAllAssignmentsConcepts(): Observable<IssueWrapper> {
-    return this.client.get<IssueWrapper>(`/api/office-hours/assignments/1`);
+    return this.client.get<IssueWrapper>(
+      `/api/office-hours/assignments/${this.courseSiteId}`
+    );
   }
 }

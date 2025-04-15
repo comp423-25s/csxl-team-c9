@@ -21,14 +21,18 @@ from ...models.academics.my_courses import (
     OfficeHourGetHelpOverview,
 )
 from ...models.office_hours.office_hours import OfficeHours, NewOfficeHours, MoveTicket
-from ...models.office_hours.ticket import TicketState, AssignmentConcept, AssignmentIssue, OfficeHoursTicket
+from ...models.office_hours.ticket import TicketState, AssignmentConcept, Issue, OfficeHoursTicket
 from ...entities.entity_base import EntityBase
 from ...entities.academics.section_entity import SectionEntity
 from ...entities.office_hours import (
     CourseSiteEntity,
     OfficeHoursEntity,
     OfficeHoursTicketEntity,
+    IssueEntity,
 )
+
+from ...entities.office_hours.ticket_category_entity import TicketCategoryEntity
+
 from ...entities.office_hours.user_created_tickets_table import (
     user_created_tickets_table,
 )
@@ -493,30 +497,25 @@ class OfficeHoursService:
                 "You cannot access office hours for a class you are not enrolled in."
             )
         
-    def get_all_assignments_concepts(self):
-        num_assignments = 10
-        num_concepts = 7
-        num_items_possible = [1,2,3,4,5,6,7]
+    def get_all_assignments_concepts(self, course_id: int):
+        assignments = []
+        concepts = []
 
-        def create_dummy_assignment(indentifier: int):
-            return AssignmentConcept(
-                id=indentifier,
-                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
-                name=f'Ex-{indentifier}',
-                category=TicketType.ASSIGNMENT_HELP
-            )
+        data: list[TicketCategoryEntity] = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.course_site_id == course_id).all()
 
-        def create_dummy_concept(indentifier: int):
-            return AssignmentConcept(
-                id=indentifier,
-                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
-                name=f'Concept-{indentifier}',
-                category=TicketType.CONCEPTUAL_HELP
-            )
-            
+        for item in data:
+            issue_count = self._session.query(IssueEntity.ticket_category_id).filter(
+                IssueEntity.ticket_category_id == item.id
+            ).all()
 
-        assignments = [create_dummy_assignment(i) for i in range(num_assignments)]
-        concepts = [create_dummy_concept(i) for i in range(num_concepts)]
+
+            item_model = item.to_model()
+            item_model.num_issues = len(issue_count)
+
+            if item.category == TicketType.ASSIGNMENT_HELP.value:
+                assignments.append(item_model)
+            else:
+                concepts.append(item_model)
 
         return {
             "assignments": assignments,
@@ -525,66 +524,38 @@ class OfficeHoursService:
 
     def get_all_issues(self, assignment_id: str):
         # get all issues associated with this input id
+        all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == assignment_id).all()    
+        
+        issues = []
 
-        num_issues = 10
-        num_items_possible = [1,2,3,4,5,6,7]
+        for issue in all_issues:
+            issue_count = self._session.query(OfficeHoursTicketEntity.issue_id).filter(
+                OfficeHoursTicketEntity.issue_id == issue.id
+            ).all()
 
-        def create_dummy_issue(indentifier: int):
-            return AssignmentIssue(
-                id=indentifier,
-                num_tickets=num_items_possible[random.randint(0, len(num_items_possible) - 1)],
-                name=f'Issue-{indentifier}'
-            )
+            issue_model = issue.to_model()
+            issue_model.num_tickets = len(issue_count)
 
-        issues = [create_dummy_issue(i) for i in range(num_issues)]
+            issues.append(issue_model)
+
+            
 
         return {
             "issues": issues
         }
 
     def get_all_tickets_by_issue(self, issue_id: str):
-        # Get all issues associated with an assignment id
-        num_tickets = 10
-        descriptions = [
-            "Need help understanding recursion",
-            "Question about runtime complexity",
-            "Stuck on step 3 of the proof",
-            "Issue with combinatorics problem",
-            "Confused about quantifiers",
-            "Need clarification on assignment instructions",
-            "Bug in my code that I can't trace",
-            "Having trouble with induction base case",
-            "Unclear about notation in lecture",
-            "Need feedback on my logic puzzle solution"
-        ]
+        # Get all tickets associated with a given issue_id
 
-        def create_dummy_ticket(identifier: int):
-            return OfficeHoursTicket(
-                id=identifier,
-                description=descriptions[identifier % len(descriptions)],
-                type=random.choice(list(TicketType)),
-                office_hours_id=random.randint(1, 5),
-                state=random.choice(list(TicketState)),
-                created_at=datetime.now() - timedelta(minutes=random.randint(1, 120)),
-                called_at=None if random.random() < 0.5 else datetime.now() - timedelta(minutes=random.randint(1, 60)),
-                closed_at=None if random.random() < 0.5 else datetime.now(),
-                have_concerns=random.choice([True, False]),
-                caller_notes=random.choice([
-                    "Student requested quick response",
-                    "Wants to discuss in detail",
-                    "Follow-up from last week",
-                    "Prefers email explanation",
-                    ""
-                ]),
-                caller_id=random.randint(1000, 9999)
-            )
-
-        tickets = [create_dummy_ticket(i) for i in range(num_tickets)]
+        tickets: list[OfficeHoursTicketEntity] = (
+            self._session.query(OfficeHoursTicketEntity)
+            .filter(OfficeHoursTicketEntity.issue_id == issue_id)
+            .all()
+        )
 
         return {
-            "tickets": tickets
+            "tickets": [ticket.to_model() for ticket in tickets]
         }
-
     
     def move_ticket(self, moveTicket: MoveTicket):
         # move ticket from its current issue to a new issue

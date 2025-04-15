@@ -31,13 +31,14 @@ __license__ = "MIT"
 api = APIRouter(prefix="/api/office-hours")
 
 
-@api.get("/assignments-concepts", tags=["Office Hours"])
+@api.get("/assignments-concepts/{course_id}", tags=["Office Hours"])
 def get_all_issues(
+    course_id: int,
     oh_event_svc: OfficeHoursService = Depends()):
     """
     Gets all of the issues associated with specific assignemnt.
     """
-    return oh_event_svc.get_all_assignments_concepts()
+    return oh_event_svc.get_all_assignments_concepts(course_id)
 
 
 @api.get("/assignments/{assignment_id}", tags=["Office Hours"])

@@ -75,6 +75,16 @@
         </mat-select>
       </mat-form-field>
       @if (+ticketForm.controls['type'].value! === 1) {
+        <mat-form-field appearance="outline">
+          <mat-label>
+            Name of Assignment?
+          </mat-label>
+          <textarea
+            matInput
+            required
+            formControlName="assignment_concept_name"
+            placeholder="Ex: Homework 1"></textarea>
+        </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>
           What section of the assignment do you need help with?
@@ -118,6 +128,16 @@
       } @else {
       <mat-form-field appearance="outline">
         <mat-label>
+          Name of Concept?
+        </mat-label>
+        <textarea
+          matInput
+          required
+          formControlName="assignment_concept_name"
+          placeholder="Ex. Docker"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>
           What questions or topics do you want to talk through?
         </mat-label>
         <textarea
@@ -125,7 +145,7 @@
           required
           formControlName="description"
           placeholder="Ex. I need help understanding adding to a binary tree"></textarea>
-      </mat-form-field>
+      </mat-form-field>      
       } @if (data()!.event_mode === 'Virtual - Student Link') {
       <mat-form-field appearance="outline" color="accent">
         <mat-label>Zoom Link</mat-label>

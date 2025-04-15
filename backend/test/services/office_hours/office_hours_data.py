@@ -218,6 +218,7 @@ comp_110_queued_ticket = OfficeHoursTicket(
     caller_notes="",
     office_hours_id=comp_110_current_office_hours.id,
     caller_id=None,
+    assignment_concept_name="Ex01"
 )
 comp_110_cancelled_ticket = OfficeHoursTicket(
     id=2,
@@ -231,11 +232,12 @@ comp_110_cancelled_ticket = OfficeHoursTicket(
     caller_notes="",
     office_hours_id=comp_110_current_office_hours.id,
     caller_id=None,
+    assignment_concept_name="Ex01"
 )
 comp_110_called_ticket = OfficeHoursTicket(
     id=3,
     description="I do not know how to exit vim. Do I need to burn my PC?",
-    type=TicketType.ASSIGNMENT_HELP,
+    type=TicketType.CONCEPTUAL_HELP,
     state=TicketState.CALLED,
     created_at=datetime.now() - timedelta(minutes=1),
     called_at=datetime.now(),
@@ -244,6 +246,7 @@ comp_110_called_ticket = OfficeHoursTicket(
     caller_notes="",
     office_hours_id=comp_110_current_office_hours.id,
     caller_id=section_data.comp110_instructor.id,
+    assignment_concept_name="Vim"
 )
 comp_110_closed_ticket = OfficeHoursTicket(
     id=4,
@@ -257,6 +260,7 @@ comp_110_closed_ticket = OfficeHoursTicket(
     caller_notes="Student could not find the power button on their laptop.",
     office_hours_id=comp_110_current_office_hours.id,
     caller_id=section_data.comp110_instructor.id,
+    assignment_concept_name="computer"
 )
 comp_110_ticket_creators = [
     (comp_110_queued_ticket, [section_data.comp110_student_1.id]),
@@ -391,6 +395,7 @@ new_ticket = NewOfficeHoursTicket(
     description="Help me!",
     type=TicketType.ASSIGNMENT_HELP,
     office_hours_id=comp_110_current_office_hours.id,
+    assignment_concept_name="Ex01"
 )
 
 new_course_site = NewCourseSite(

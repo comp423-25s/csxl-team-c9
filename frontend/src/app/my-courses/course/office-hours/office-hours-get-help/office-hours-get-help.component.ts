@@ -68,8 +68,11 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
     conceptsSection: new FormControl('', [Validators.required]),
     attemptSection: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
-    link: new FormControl('', [Validators.required])
+    link: new FormControl('', [Validators.required]),
+    assignment_concept_name: new FormControl('', [Validators.required])
   });
+
+  courseSiteId: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -80,6 +83,7 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
   ) {
     // Load information from the parent route
     this.ohEventId = this.route.snapshot.params['event_id'];
+    this.courseSiteId = this.route.parent!.snapshot.params['course_site_id'];
   }
 
   /** Create a timer subscription to poll office hour data at an interval at view initalization */
@@ -105,8 +109,13 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
      */
     let notify: boolean = false;
     /* Test notification condition and store result in notify */
-    if (getHelpData.ticket && getHelpData.ticket.state === 'Called' &&
-      this.data() && this.data()!.ticket && this.data()!.ticket!.state === 'Queued') {
+    if (
+      getHelpData.ticket &&
+      getHelpData.ticket.state === 'Called' &&
+      this.data() &&
+      this.data()!.ticket &&
+      this.data()!.ticket!.state === 'Queued'
+    ) {
       notify = true;
     }
     /* Notification behavior based on result stored in notify */
@@ -114,9 +123,11 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
       CHIME.play();
       this.titleFlashTimer = timer(0, 1000).subscribe(() => {
         this.titleService.setTitle(
-          this.titleService.getTitle() === NOTIFICATION_TITLE ?
-            ORIGINAL_TITLE : NOTIFICATION_TITLE);
-      })
+          this.titleService.getTitle() === NOTIFICATION_TITLE
+            ? ORIGINAL_TITLE
+            : NOTIFICATION_TITLE
+        );
+      });
     } else {
       this.titleFlashTimer?.unsubscribe();
       this.titleService.setTitle(ORIGINAL_TITLE);
@@ -137,9 +148,10 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
     let contentFieldsValid =
       this.ticketForm.controls['type'].value === 1
         ? this.ticketForm.controls['assignmentSection'].value !== '' &&
-        this.ticketForm.controls['codeSection'].value !== '' &&
-        this.ticketForm.controls['conceptsSection'].value !== '' &&
-        this.ticketForm.controls['attemptSection'].value !== ''
+          this.ticketForm.controls['codeSection'].value !== '' &&
+          this.ticketForm.controls['conceptsSection'].value !== '' &&
+          this.ticketForm.controls['attemptSection'].value !== '' &&
+          this.ticketForm.controls['assignment_concept_name'].value !== ''
         : this.ticketForm.controls['description'].value !== '';
 
     let linkFieldValid =
@@ -170,13 +182,17 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
     if (this.ticketForm.controls['type'].value === 0) {
       form_description =
         '**Conceptual Question**:  \n' +
-        (this.ticketForm.controls['description'].value ?? '');
+        (this.ticketForm.controls['description'].value ?? '') +
+        '  \n  \n**Concept Name**:  \n' +
+        (this.ticketForm.controls['assignment_concept_name'].value ?? '');
     } else {
       // Concatenates form description together and adds in new line characters
       // NOTE: Two spaces in front of \n is required.
       form_description =
         '**Assignment Part**:  \n' +
         (this.ticketForm.controls['assignmentSection'].value ?? '') +
+        '  \n  \n**Assignment Name**:  \n' +
+        (this.ticketForm.controls['assignment_concept_name'].value ?? '') +
         '  \n  \n**Goal**:  \n' +
         (this.ticketForm.controls['codeSection'].value ?? '') +
         '  \n  \n**Concepts**:  \n' +
@@ -196,18 +212,22 @@ export class OfficeHoursGetHelpComponent implements OnInit, OnDestroy {
     let ticketDraft: TicketDraft = {
       office_hours_id: this.ohEventId,
       description: form_description,
-      type: form_type
+      type: form_type,
+      assignment_concept_name:
+        this.ticketForm.controls['assignment_concept_name'].value ?? ''
     };
 
-    this.myCoursesService.createTicket(ticketDraft).subscribe({
-      next: (_) => {
-        this.pollData();
-      },
-      error: (_) => {
-        this.snackBar.open(`Could not create a ticket at this time.`, '', {
-          duration: 2000
-        });
-      }
-    });
+    this.myCoursesService
+      .createTicket(ticketDraft, this.courseSiteId)
+      .subscribe({
+        next: (_) => {
+          this.pollData();
+        },
+        error: (_) => {
+          this.snackBar.open(`Could not create a ticket at this time.`, '', {
+            duration: 2000
+          });
+        }
+      });
   }
 }
