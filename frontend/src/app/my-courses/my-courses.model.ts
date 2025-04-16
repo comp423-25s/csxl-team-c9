@@ -234,6 +234,7 @@ export interface TicketDraft {
   office_hours_id: number;
   description: string;
   type: number;
+  assignment_concept_name: string;
 }
 
 export interface CourseSiteOverview {

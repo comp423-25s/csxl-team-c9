@@ -2,6 +2,8 @@
 APIs for academics for office hour tickets.
 """
 
+from ...models.office_hours.ticket_type import TicketType
+from typing import Annotated, Literal
 from datetime import datetime
 from fastapi import Depends
 from sqlalchemy import select
@@ -18,17 +20,28 @@ from ...models.office_hours.ticket import (
     OfficeHoursTicket,
 )
 
+from ...models.office_hours.ticket import Issue
+from ...entities.office_hours.issue_entity import IssueEntity
+
+from ..openai import OpenAIService, openai_client 
+from ...models.openai_test_response import OpenAITestResponse
+
 from ...entities.academics.section_entity import SectionEntity
 from ...entities.office_hours import (
     CourseSiteEntity,
     OfficeHoursEntity,
     OfficeHoursTicketEntity,
 )
+
+from ...entities.office_hours.ticket_category_entity import TicketCategoryEntity
+
 from ...entities.academics.section_member_entity import SectionMemberEntity
 from ..exceptions import CoursePermissionException, ResourceNotFoundException
 from ...entities.office_hours import user_created_tickets_table
 
-__authors__ = ["Ajay Gandecha"]
+__authors__ = ["Ajay Gandecha",
+               "Simon Felt",
+               "Daniel Ramsgard"]
 __copyright__ = "Copyright 2024"
 __license__ = "MIT"
 
@@ -38,11 +51,53 @@ class OfficeHourTicketService:
     Service that performs all of the actions for office hour tickets.
     """
 
-    def __init__(self, session: Session = Depends(db_session)):
+    def query_gpt(self, office_hours_ticket: OfficeHoursTicket) -> int:
+        # first get the assignment id
+        single_issue: IssueEntity = self._session.query(IssueEntity).filter(IssueEntity.id == office_hours_ticket.issue_id).one_or_none()
+
+        if single_issue:
+            # get all issues that share the assignment id
+            all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == single_issue.ticket_category_id).all()
+        else:
+            all_issues = []
+
+        response: OpenAITestResponse = self._openai_svc.prompt(
+            f"""
+                Your job is to sort office hours tickets into categories base off of 
+                what they issue that they needed help with the possible categories are as follows:
+
+                ({', '.join(issue.to_model().name for issue in all_issues)})
+
+                If the ticket provided does not fall into any of the categories you can respond with 
+                a 1-5 word category that you believe that it should be sorted into, this category should 
+                be relatively broad but still specific enough to have meaning. Respond with a bool to indicate 
+                whether or not you created a new category, and then also respond with the category that the 
+                ticket should be sorted into.
+            """
+            ,
+            f"""
+                Ticket: ({office_hours_ticket.description})
+            """
+            , OpenAITestResponse)
+        
+        if response.new_category:
+            issue = IssueEntity(name=response.category, ticket_category_id=office_hours_ticket.ticket_category_id)
+            self._session.add(issue)
+            self._session.commit()
+            issue_id = issue.id
+        else:
+            issue = self._session.query(IssueEntity).filter_by(name=response.category).one()
+            issue_id = issue.id
+
+        return issue_id
+
+
+    def __init__(self, openai_svc: Annotated[OpenAIService, Depends()], session: Session = Depends(db_session)):
         """
         Initializes the database session.
         """
-        self._session = session
+        self._session = session        
+        self._openai_svc = openai_svc
 
     def _to_oh_ticket_overview(
         self, ticket: OfficeHoursTicketEntity
@@ -173,6 +228,9 @@ class OfficeHourTicketService:
             raise CoursePermissionException(
                 "Cannot close a ticket that has not been called."
             )
+        
+        issue_id: int = self.query_gpt(ticket_entity.to_model())
+        ticket_entity.issue_id = issue_id
 
         # Create query off of the member query for just the members matching
         # with the current user (used to determine permissions)
@@ -197,16 +255,29 @@ class OfficeHourTicketService:
 
         # Close the ticket
         ticket_entity.closed_at = datetime.now()
-        ticket_entity.state = TicketState.CLOSED
+        ticket_entity.state = TicketState.CLOSED        
 
         # Save changes
         self._session.commit()
 
         # Return the changed ticket
         return self._to_oh_ticket_overview(ticket_entity)
+    
+    def _create_or_store_assignment_concept(self, assignment_concept_name: str, category: TicketType, course_site_id: int):        
+        new_item = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.name == assignment_concept_name).one_or_none()
+
+        if not new_item:
+            ticket_cat = TicketCategoryEntity(name=assignment_concept_name, category=category, course_site_id=course_site_id)
+            self._session.add(ticket_cat)
+            self._session.commit()
+            id_to_ret = ticket_cat.id
+        else:
+            id_to_ret = new_item.id
+
+        return id_to_ret
 
     def create_ticket(
-        self, user: User, ticket: NewOfficeHoursTicket
+        self, user: User, ticket: NewOfficeHoursTicket, course_id: int
     ) -> OfficeHourTicketOverview:
         """
         Creates a new office hours ticket.
@@ -222,6 +293,9 @@ class OfficeHourTicketService:
             PermissionError: If the logged-in user is not a section member student.
 
         """
+        ticket_category_id_ret = self._create_or_store_assignment_concept(ticket.assignment_concept_name, ticket.type, course_id)
+
+
         # Find the IDs of the creators of the ticket
         creator_ids = [user.id]
         # TODO: Reimplement group tickets
@@ -273,7 +347,8 @@ class OfficeHourTicketService:
             )
 
         # Create entity
-        oh_ticket_entity = OfficeHoursTicketEntity.from_new_model(ticket)
+        ticket.ticket_category_id = ticket_category_id_ret
+        oh_ticket_entity = OfficeHoursTicketEntity.from_new_model(ticket)        
 
         # Add new object to table and commit changes
         self._session.add(oh_ticket_entity)

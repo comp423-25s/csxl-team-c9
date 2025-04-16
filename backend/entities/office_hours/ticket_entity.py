@@ -21,6 +21,8 @@ __authors__ = [
     "Sadie Amato",
     "Bailey DeSouza",
     "Meghan Sun",
+    "Simon Felt",
+    "Daniel Ramsgard"
 ]
 __copyright__ = "Copyright 2024"
 __license__ = "MIT"
@@ -78,6 +80,11 @@ class OfficeHoursTicketEntity(EntityBase):
         back_populates="called_oh_tickets"
     )
 
+    # Add foriegn key for issue_id
+    issue_id: Mapped[int] = mapped_column(ForeignKey('issue.id'), nullable=True)
+
+    ticket_category_id: Mapped[int] = mapped_column(ForeignKey('ticket_category.id'), nullable=True)
+
     @classmethod
     def from_new_model(cls, model: NewOfficeHoursTicket) -> Self:
         """
@@ -92,6 +99,7 @@ class OfficeHoursTicketEntity(EntityBase):
             description=model.description,
             type=model.type,
             office_hours_id=model.office_hours_id,
+            ticket_category_id=model.ticket_category_id
         )
 
     @classmethod
@@ -116,6 +124,8 @@ class OfficeHoursTicketEntity(EntityBase):
             caller_notes=model.caller_notes,
             office_hours_id=model.office_hours_id,
             caller_id=model.caller_id,
+            issue_id=model.issue_id,
+            ticket_category_id=model.ticket_category_id
         )
 
     def to_model(self) -> OfficeHoursTicket:
@@ -137,6 +147,8 @@ class OfficeHoursTicketEntity(EntityBase):
             caller_notes=self.caller_notes,
             office_hours_id=self.office_hours_id,
             caller_id=self.caller_id,
+            issue_id=self.issue_id,
+            ticket_category_id=self.ticket_category_id
         )
 
     def to_details_model(self) -> OfficeHoursTicketDetails:
@@ -161,4 +173,6 @@ class OfficeHoursTicketEntity(EntityBase):
             office_hours=self.office_hours,
             creators=[creator.to_flat_model() for creator in self.creators],
             caller=(self.caller.to_flat_model() if self.caller is not None else None),
+            issue_id=self.issue_id
         )
+ 

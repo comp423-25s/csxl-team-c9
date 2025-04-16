@@ -27,6 +27,8 @@ class NewOfficeHoursTicket(BaseModel):
     description: str
     type: TicketType
     office_hours_id: int
+    assignment_concept_name: str | None = None
+    ticket_category_id: int | None = None
 
 
 class OfficeHoursTicket(NewOfficeHoursTicket):
@@ -45,6 +47,8 @@ class OfficeHoursTicket(NewOfficeHoursTicket):
     have_concerns: bool = False
     caller_notes: str = ""
     caller_id: int | None
+    issue_id: int | None = None
+    ticket_category_id: int | None = None
 
 
 class AssignmentConcept(BaseModel):
@@ -54,18 +58,19 @@ class AssignmentConcept(BaseModel):
     This model stores the data for an assignment or concept
     """
     id: int
-    num_tickets: int
     name: str
     category: Literal[TicketType.ASSIGNMENT_HELP, TicketType.CONCEPTUAL_HELP]
+    course_site_id: int
+    num_issues: int | None = None
 
 
-class AssignmentIssue(BaseModel):
+class Issue(BaseModel):
     """
     Pydantic model to represent an `AssignmentIssue`.
 
     This model stores the data for an assignments issues.
     """
-    id: int
-    num_tickets: int
-    name: str
-    
+    id: int | None
+    name: str | None
+    ticket_category_id: int | None
+    num_tickets: int | None = None

@@ -69,11 +69,12 @@ def close_ticket(
     return oh_ticket_svc.close_ticket(subject, id)
 
 
-@api.post("/", tags=["Office Hours"])
+@api.post("/{course_id}", tags=["Office Hours"])
 def new_oh_ticket(
     ticket: NewOfficeHoursTicket,
+    course_id: int,
     subject: User = Depends(registered_user),
-    oh_ticket_svc: OfficeHourTicketService = Depends(),
+    oh_ticket_svc: OfficeHourTicketService = Depends(),    
 ) -> OfficeHourTicketOverview:
     """
     Adds a new OH ticket to the database
@@ -81,4 +82,4 @@ def new_oh_ticket(
     Returns:
         OfficeHoursTicketDetails: OH Ticket created
     """
-    return oh_ticket_svc.create_ticket(subject, ticket)
+    return oh_ticket_svc.create_ticket(subject, ticket, course_id)
