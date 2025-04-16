@@ -11,22 +11,22 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
 }
 
 /* Headings */
 .left-column, .right-column {
   margin-bottom: 1rem;
   font-size: 1.5rem;
-  color: black;
+  /* color: black; */
 }
 
 .header{
   padding: 0.5rem 1rem;
   border-radius: 0.4rem;
   text-align: center; 
-  color: #4B0082; 
-  background-color: #f9f9f9;
+  /* color: #4B0082; 
+  background-color: #f9f9f9; */
 }
 
 .grid {
@@ -41,8 +41,8 @@
   position: absolute;
   right: 0.5rem;
   bottom: 0.5rem;
-  background-color: #4B0082;
-  color: white;
+  background-color: #a566cc;
+  /* color: white; */
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 0.4rem;
@@ -51,7 +51,7 @@
 }
 
 .view-button:hover {
-  background-color: #4c0082e5;
+  background-color: #612d8c;
 }
 
 .grid-item {
@@ -61,20 +61,30 @@
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
 }
 
 .ticket-count {
   position: absolute;
   top: .8rem;
   right: 0.6rem;
-  background-color: #4c0082e5;
-  color: white;
+  background-color: #a566cc;
+   color: white;
   border-radius: 50%;
   width: 1.5rem;
   height: 1.5rem;
   text-align: center;
   font-weight: bold;
   font-size: 0.7rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ticket-count, .view-button {
+    color: rgb(249, 247, 247);
+    background-color: #b481e7; /* lighter purple for dark bg */
+  }
+  .view-button:hover {
+    background-color: #63339a;
+  }
 }
 
