@@ -30,7 +30,7 @@ export class IssueComponent {
   }
 
   navigateToTickets(): void {
-    this.router.navigate([`/course/${this.courseSiteId}/issues/${issue_id}`]);
+    this.router.navigate([`/course/${this.courseSiteId}/ticket-group`]);
   }
 
   courseSiteId: string;

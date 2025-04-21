@@ -21,12 +21,14 @@ export class GroupComponent {
   };
 
   courseSiteId: string;
+  issue_id: number;
 
   constructor(
     private route: ActivatedRoute,
     private client: HttpClient
   ) {
     this.courseSiteId = this.route.parent!.snapshot.params['course_site_id'];
+    this.issue_id = this.route.parent!.snapshot.params['issue_id'];
   }
 
   tickets = signal<Ticket[]>([]);
@@ -40,7 +42,7 @@ export class GroupComponent {
 
   getAllAssignmentsConcepts(): Observable<TicketWrapper> {
     return this.client.get<TicketWrapper>(
-      `/api/office-hours/issues/${this.courseSiteId}`
+      `/api/office-hours/issues/${this.issue_id}` /* should be {{issue_id }} */
     );
   }
 
