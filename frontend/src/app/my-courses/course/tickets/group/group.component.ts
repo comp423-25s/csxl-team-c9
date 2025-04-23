@@ -14,33 +14,36 @@ import { Ticket, TicketWrapper } from 'src/app/my-courses/my-courses.model';
 })
 export class GroupComponent {
   public static Route = {
-    path: 'ticket-group',
+    path: 'issues/:issue_id',
     title: 'Course',
     component: GroupComponent,
     canActivate: [myCoursesInstructorGuard]
   };
 
-  courseSiteId: string;
+  issue_id: string;
 
   constructor(
     private route: ActivatedRoute,
     private client: HttpClient
   ) {
-    this.courseSiteId = this.route.parent!.snapshot.params['course_site_id'];
+    this.issue_id = this.route.parent!.snapshot.params['issue_id'];
   }
 
   tickets = signal<Ticket[]>([]);
 
   ngOnInit() {
-    this.getAllAssignmentsConcepts().subscribe((data: TicketWrapper) => {
-      console.log(data);
-      this.tickets.set(data.tickets);
+    this.route.paramMap.subscribe((params) => {
+      this.issue_id = params.get('issue_id')!;
+      this.getAllAssignmentsConcepts().subscribe((data: TicketWrapper) => {
+        console.log(data);
+        this.tickets.set(data.tickets);
+      });
     });
   }
 
   getAllAssignmentsConcepts(): Observable<TicketWrapper> {
     return this.client.get<TicketWrapper>(
-      `/api/office-hours/issues/${this.courseSiteId}`
+      `/api/office-hours/issues/${this.issue_id}`
     );
   }
 

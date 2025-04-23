@@ -29,8 +29,8 @@ export class IssueComponent {
     });
   }
 
-  navigateToTickets(): void {
-    this.router.navigate([`/course/${this.courseSiteId}/ticket-group/`]);
+  navigateToTickets(issue_id: number): void {
+    this.router.navigate([`/course/${this.courseSiteId}/issues/${issue_id}`]);
   }
 
   courseSiteId: string;
