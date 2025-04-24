@@ -41,9 +41,10 @@ export class AssignmentsConceptsPageComponent {
   }
   courseSiteId: string;
 
-  navigateToIssues(): void {
-    console.log('MFOOFMFMF');
-    this.router.navigate([`/course/${this.courseSiteId}/issues`]);
+  navigateToIssues(ticket_category_id: number): void {
+    this.router.navigate([
+      `/course/${this.courseSiteId}/ticket_categories/${ticket_category_id}/issues`
+    ]);
   }
 
   constructor(

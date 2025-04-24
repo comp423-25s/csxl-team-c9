@@ -512,7 +512,7 @@ class OfficeHoursService:
             item_model = item.to_model()
             item_model.num_issues = len(issue_count)
 
-            if item.category == TicketType.ASSIGNMENT_HELP.value:
+            if item.category == TicketType.ASSIGNMENT_HELP:
                 assignments.append(item_model)
             else:
                 concepts.append(item_model)
