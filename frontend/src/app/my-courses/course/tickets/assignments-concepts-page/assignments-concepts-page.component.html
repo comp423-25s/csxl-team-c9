@@ -6,7 +6,7 @@
     <div class="grid-item">
       <span class="ticket-count">{{ length() }}</span>
       <h3>{{ item.name }}</h3>
-      <button class="view-button" (click)="navigateToIssues()">View</button>
+      <button class="view-button" (click)="navigateToIssues(item.id)">View</button>
     </div>    
   }
 </div>
@@ -19,7 +19,7 @@
     <div class="grid-item">
       <span class="ticket-count">{{ length() }}</span>
       <h3>{{ item.name }}</h3>
-      <button class="view-button" (click)="navigateToIssues()">View</button>
+      <button class="view-button" (click)="navigateToIssues(item.id)">View</button>
     </div>    
 }
 </div>

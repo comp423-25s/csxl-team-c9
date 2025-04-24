@@ -14,7 +14,7 @@ import { Issue, IssueWrapper } from 'src/app/my-courses/my-courses.model';
 })
 export class IssueComponent {
   public static Route = {
-    path: 'issues',
+    path: 'ticket_categories/:ticket_category_id/issues',
     title: 'Course',
     component: IssueComponent,
     canActivate: [myCoursesInstructorGuard]
@@ -22,10 +22,15 @@ export class IssueComponent {
 
   issues = signal<Issue[]>([]);
 
+  ticket_category_id: string;
+
   ngOnInit() {
-    this.getAllAssignmentsConcepts().subscribe((data: IssueWrapper) => {
-      console.log(data);
-      this.issues.set(data.issues);
+    this.route.paramMap.subscribe((params) => {
+      this.ticket_category_id = params.get('ticket_category_id')!;
+      this.getAllAssignmentsConcepts().subscribe((data: IssueWrapper) => {
+        console.log(data);
+        this.issues.set(data.issues);
+      });
     });
   }
 
@@ -41,11 +46,13 @@ export class IssueComponent {
     private router: Router
   ) {
     this.courseSiteId = this.route.parent!.snapshot.params['course_site_id'];
+    this.ticket_category_id =
+      this.route.parent!.snapshot.params['ticket_category_id'];
   }
 
   getAllAssignmentsConcepts(): Observable<IssueWrapper> {
     return this.client.get<IssueWrapper>(
-      `/api/office-hours/assignments/${this.courseSiteId}`
+      `/api/office-hours/assignments/${this.ticket_category_id}`
     );
   }
 }
