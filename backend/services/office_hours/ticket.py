@@ -63,25 +63,27 @@ class OfficeHourTicketService:
 
         response: OpenAITestResponse = self._openai_svc.prompt(
             f"""
-            Your task is to classify office hour tickets based on the issue the student needed help with. These tickets are organized under broader categories — for example, an assignment or a general topic area.
+                Your task is to classify office hour tickets based on the specific issue the student needed help with. These tickets are organized under broader categories — for example, an assignment or a general topic area.
 
-            The current context for this ticket is: "{ticket_category}"
+                The current context for this ticket is: "{ticket_category}"
 
-            You must choose the best-fit category from the list below:
-            ({', '.join(issue.to_model().name for issue in all_issues)})
+                You must choose the best-fit category from the list below:
+                ({', '.join(issue.to_model().name for issue in all_issues)})
 
-            Be strict about matching to an existing category — prefer using one of these unless the ticket clearly doesn’t fit.
+                When selecting a category, prioritize **conceptual similarity** over superficial topic overlap. For example, "resolving merge conflicts" and "merging divergent branches" share a focus on handling Git conflicts and should likely be grouped. But "creating a Git branch" is more about setup and should not be grouped with conflict resolution.
 
-            If no existing category is a good match, you may create a new one. Any new category must:
-            - Be 1–5 words long
-            - Be more specific than a general topic (e.g., “Docker not running” instead of “Docker Issues”)
-            - Be general enough that it could apply to multiple tickets
+                You may use an existing category if the ticket clearly fits, but do not force a match. If no existing category is suitable, you may create a new one.
 
-            Respond with:
-            - A boolean indicating whether a new category was created
-            - The best-fit category (either an existing one or your newly created one)
+                Any new category must:
+                - Be 1–5 words long
+                - Be more specific than a general topic (e.g., “Docker not running” instead of “Docker Issues”)
+                - Be general enough that it could apply to multiple tickets
 
-            Use only the content of the ticket and the given context to decide. Do not invent or infer extra information beyond what’s provided.
+                Respond with:
+                - A boolean indicating whether a new category was created
+                - The best-fit category (either an existing one or your newly created one)
+
+                Base your decision only on the content of the ticket and the given context. Do not infer beyond the information provided.
             """
             ,
             f"""
