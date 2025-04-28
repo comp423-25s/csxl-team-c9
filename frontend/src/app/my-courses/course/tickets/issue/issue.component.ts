@@ -4,11 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
 import { Issue, IssueWrapper } from 'src/app/my-courses/my-courses.model';
+import { IssueCardWidget } from '../widget/issue-card/issue-card.widget';
 
 @Component({
   selector: 'app-issue',
   standalone: true,
-  imports: [],
+  imports: [IssueCardWidget],
   templateUrl: './issue.component.html',
   styleUrl: './issue.component.css'
 })
