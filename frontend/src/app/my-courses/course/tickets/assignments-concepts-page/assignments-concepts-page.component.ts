@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { FrontendServiceService } from '../frontend-service.service';
 import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
 import {
   AssignmentConcept,
@@ -33,11 +34,13 @@ export class AssignmentsConceptsPageComponent {
   length = signal<number>(0);
 
   ngOnInit() {
-    this.getAllAssignmentsConcepts().subscribe((data: AssignmentsConcepts) => {
-      console.log(data);
-      this.assnConcepts.set(data);
-      this.length.set(data.concepts.length);
-    });
+    this.service
+      .getAllAssignmentsConcepts(this.courseSiteId)
+      .subscribe((data: AssignmentsConcepts) => {
+        console.log(data);
+        this.assnConcepts.set(data);
+        this.length.set(data.concepts.length);
+      });
   }
   courseSiteId: string;
 
@@ -50,14 +53,9 @@ export class AssignmentsConceptsPageComponent {
   constructor(
     private route: ActivatedRoute,
     private client: HttpClient,
-    private router: Router
+    private router: Router,
+    private service: FrontendServiceService
   ) {
     this.courseSiteId = this.route.parent!.snapshot.params['course_site_id'];
-  }
-
-  getAllAssignmentsConcepts(): Observable<AssignmentsConcepts> {
-    return this.client.get<AssignmentsConcepts>(
-      `/api/office-hours/assignments-concepts/${this.courseSiteId}`
-    );
   }
 }
