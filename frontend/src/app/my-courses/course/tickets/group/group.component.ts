@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { FrontendServiceService } from '../frontend-service.service';
 import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
 import { Ticket, TicketWrapper } from 'src/app/my-courses/my-courses.model';
 
@@ -24,7 +25,8 @@ export class GroupComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private client: HttpClient
+    private client: HttpClient,
+    private service: FrontendServiceService
   ) {
     this.issue_id = this.route.parent!.snapshot.params['issue_id'];
   }
@@ -34,17 +36,13 @@ export class GroupComponent {
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       this.issue_id = params.get('issue_id')!;
-      this.getAllAssignmentsConcepts().subscribe((data: TicketWrapper) => {
-        console.log(data);
-        this.tickets.set(data.tickets);
-      });
+      this.service
+        .getAllIssues(this.issue_id)
+        .subscribe((data: TicketWrapper) => {
+          console.log(data);
+          this.tickets.set(data.tickets);
+        });
     });
-  }
-
-  getAllAssignmentsConcepts(): Observable<TicketWrapper> {
-    return this.client.get<TicketWrapper>(
-      `/api/office-hours/issues/${this.issue_id}`
-    );
   }
 
   IsOpen: { [key: number]: boolean } = {};
