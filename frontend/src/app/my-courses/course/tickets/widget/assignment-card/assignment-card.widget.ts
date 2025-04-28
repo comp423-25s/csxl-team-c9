@@ -19,10 +19,10 @@ export class AssignmentCardWidget {
   @Input() numTickets!: number;
   @Input() assignmentID!: number;
 
-  @Output() viewClicked = new EventEmitter<void>(); // no need to send any data
+  @Output() viewClicked = new EventEmitter<number>();
 
   onView() {
     console.log('Button clicked!');
-    this.viewClicked.emit();
+    this.viewClicked.emit(this.assignmentID);
   }
 }

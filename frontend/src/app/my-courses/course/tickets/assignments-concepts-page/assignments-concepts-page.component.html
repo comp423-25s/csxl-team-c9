@@ -5,8 +5,9 @@
       @for (item of assnConcepts().assignments; track item) {
         <app-assignment-card
           [name]="item.name"
+          [assignmentID]="item.id"
           [numTickets]="length()"
-          (viewClicked)="navigateToIssues(item.id)">
+          (viewClicked)="navigateToIssues($event)">
         </app-assignment-card>
       }
     </div>
@@ -18,7 +19,9 @@
       @for (item of assnConcepts().concepts; track item) {
         <app-assignment-card
           [name]="item.name"
-          [numTickets]="length()">
+          [assignmentID]="item.id"
+          [numTickets]="length()"
+          (viewClicked)="navigateToIssues($event)">
         </app-assignment-card>
       }
     </div>
