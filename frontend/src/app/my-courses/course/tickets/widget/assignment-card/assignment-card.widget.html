@@ -1,0 +1,31 @@
+<mat-card
+class="assignment--card"
+appearance="outlined"
+style="width: 250px; height: 120px; display: flex; flex-direction: column; justify-content: space-between;">
+  
+
+<div class="ticket-badge">
+  {{ numTickets }}
+</div>
+
+  <mat-card-header>
+    <!-- <mat-card-title class="title-large">
+      {{ name }}
+    </mat-card-title> -->
+    <mat-card-title _ngcontent-ng-c3579980155="" class="mat-mdc-card-title title-large"> {{name}} </mat-card-title>
+
+    <mat-card-subtitle class="title-medium course-title" >
+      {{ assignmentID }}
+    </mat-card-subtitle>
+
+
+  </mat-card-header>
+
+  <mat-card-footer class="card-footer">
+    <button mat-stroked-button color="primary" type="submit" class="view-button" (click)="onView()">
+      View
+    </button>
+  </mat-card-footer>
+  
+  <!-- Optional actions -->
+  <!-- <mat-card-actions class="course-card-actions"> -->

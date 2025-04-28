@@ -7,13 +7,14 @@ import {
   AssignmentConcept,
   AssignmentsConcepts
 } from 'src/app/my-courses/my-courses.model';
+import { AssignmentCardWidget } from 'src/app/my-courses/course/tickets/widget/assignment-card/assignment-card.widget';
 import { Router } from '@angular/router';
 import { consumerPollProducersForChange } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-assignments-concepts-page',
   standalone: true,
-  imports: [],
+  imports: [AssignmentCardWidget],
   templateUrl: './assignments-concepts-page.component.html',
   styleUrl: './assignments-concepts-page.component.css'
 })
@@ -41,9 +42,10 @@ export class AssignmentsConceptsPageComponent {
   }
   courseSiteId: string;
 
-  navigateToIssues(): void {
-    console.log('MFOOFMFMF');
-    this.router.navigate([`/course/${this.courseSiteId}/issues`]);
+  navigateToIssues(ticket_category_id: number): void {
+    this.router.navigate([
+      `/course/${this.courseSiteId}/ticket_categories/${ticket_category_id}/issues`
+    ]);
   }
 
   constructor(
