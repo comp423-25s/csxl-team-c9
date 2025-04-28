@@ -53,26 +53,37 @@ class OfficeHourTicketService:
 
     def query_gpt(self, office_hours_ticket: OfficeHoursTicket) -> int:
         # first get the assignment id
-        single_issue: IssueEntity = self._session.query(IssueEntity).filter(IssueEntity.id == office_hours_ticket.issue_id).one_or_none()
+        # get all issues that share the assignment id
+        all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == office_hours_ticket.ticket_category_id).all()
 
-        if single_issue:
-            # get all issues that share the assignment id
-            all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == single_issue.ticket_category_id).all()
-        else:
-            all_issues = []
+        print("ALL_ISSUES")
+        print(all_issues)
+
+        ticket_category: int = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.id == office_hours_ticket.ticket_category_id).one()
 
         response: OpenAITestResponse = self._openai_svc.prompt(
             f"""
-                Your job is to sort office hours tickets into categories base off of 
-                what they issue that they needed help with the possible categories are as follows:
+                Your task is to classify office hour tickets based on the specific issue the student needed help with. These tickets are organized under broader categories — for example, an assignment or a general topic area.
 
+                The current context for this ticket is: "{ticket_category}"
+
+                You must choose the best-fit category from the list below:
                 ({', '.join(issue.to_model().name for issue in all_issues)})
 
-                If the ticket provided does not fall into any of the categories you can respond with 
-                a 1-5 word category that you believe that it should be sorted into, this category should 
-                be relatively broad but still specific enough to have meaning. Respond with a bool to indicate 
-                whether or not you created a new category, and then also respond with the category that the 
-                ticket should be sorted into.
+                When selecting a category, prioritize **conceptual similarity** over superficial topic overlap. For example, "resolving merge conflicts" and "merging divergent branches" share a focus on handling Git conflicts and should likely be grouped. But "creating a Git branch" is more about setup and should not be grouped with conflict resolution.
+
+                You may use an existing category if the ticket clearly fits, but do not force a match. If no existing category is suitable, you may create a new one.
+
+                Any new category must:
+                - Be 1–5 words long
+                - Be more specific than a general topic (e.g., “Docker not running” instead of “Docker Issues”)
+                - Be general enough that it could apply to multiple tickets
+
+                Respond with:
+                - A boolean indicating whether a new category was created
+                - The best-fit category (either an existing one or your newly created one)
+
+                Base your decision only on the content of the ticket and the given context. Do not infer beyond the information provided.
             """
             ,
             f"""

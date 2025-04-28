@@ -220,7 +220,6 @@ export class MyCoursesService {
    * @param ticketDraft: Drafted ticket object to create
    * @returns {Observable<TicketDetails>}
    */
-  // ticketDraft: TicketDraft, courseSiteId: string
   createTicket(
     ticketDraft: TicketDraft,
     courseId: string

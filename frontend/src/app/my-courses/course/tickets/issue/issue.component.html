@@ -3,7 +3,7 @@
     <div class="grid-item">
       <span class="ticket-count">{{ item.num_tickets }}</span>
       <h3>{{ item.name }}</h3>
-      <button class="view-button" (click)="navigateToTickets()">View</button>
+      <button class="view-button" (click)="navigateToTickets(item.id)">View</button>
     </div>    
   }
 </div>
