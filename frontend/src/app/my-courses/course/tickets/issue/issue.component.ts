@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { FrontendServiceService } from '../frontend-service.service';
 import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
 import { Issue, IssueWrapper } from 'src/app/my-courses/my-courses.model';
 
@@ -27,10 +28,12 @@ export class IssueComponent {
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       this.ticket_category_id = params.get('ticket_category_id')!;
-      this.getAllAssignmentsConcepts().subscribe((data: IssueWrapper) => {
-        console.log(data);
-        this.issues.set(data.issues);
-      });
+      this.service
+        .getAllTickets(this.ticket_category_id)
+        .subscribe((data: IssueWrapper) => {
+          console.log(data);
+          this.issues.set(data.issues);
+        });
     });
   }
 
@@ -43,16 +46,11 @@ export class IssueComponent {
   constructor(
     private route: ActivatedRoute,
     private client: HttpClient,
-    private router: Router
+    private router: Router,
+    private service: FrontendServiceService
   ) {
     this.courseSiteId = this.route.parent!.snapshot.params['course_site_id'];
     this.ticket_category_id =
       this.route.parent!.snapshot.params['ticket_category_id'];
-  }
-
-  getAllAssignmentsConcepts(): Observable<IssueWrapper> {
-    return this.client.get<IssueWrapper>(
-      `/api/office-hours/assignments/${this.ticket_category_id}`
-    );
   }
 }
