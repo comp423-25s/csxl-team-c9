@@ -4,11 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { myCoursesInstructorGuard } from 'src/app/my-courses/my-courses.guard';
 import { Ticket, TicketWrapper } from 'src/app/my-courses/my-courses.model';
+import { TicketWidget } from '../widget/ticket-widget/ticket-widget.widget';
 
 @Component({
   selector: 'app-group',
   standalone: true,
-  imports: [],
+  imports: [TicketWidget],
   templateUrl: './group.component.html',
   styleUrl: './group.component.css'
 })
@@ -30,6 +31,11 @@ export class GroupComponent {
   }
 
   tickets = signal<Ticket[]>([]);
+
+  readonly typeMap: { [key: number]: string } = {
+    0: 'Assignment Help',
+    1: 'Concept Help'
+  };
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {

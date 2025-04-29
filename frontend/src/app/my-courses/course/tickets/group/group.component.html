@@ -1,27 +1,21 @@
 <!-- need to remove nav bar somehow-->
- <div class="container">
+<div class="container">
 <div class="left-column">
-  <div class="queue-pane">
+<div class="queue-pane">
 @for (item of tickets(); track item){
-    <div class="ticket">
-      @if(item.type == 0){
-        <p>Ticket - Assignment Help </p>}
-        @if(item.type == 1){
-          <p>Ticket - Concept Help </p>}
-    <p>Created At: {{item.created_at}}</p>
-    <p>Description: {{item.description}}</p>
-    @if(isDetailsVisible(item.id)){
-      <div class="ticket-details">
-      <p>Type: {{ item.type }}</p>
-      <p>ID: {{ item.office_hours_id }}</p>
-      <p>State: {{ item.state }}</p>
-      <p>Created At: {{ item.created_at }}</p>
-      <p>Called At: {{ item.called_at }}</p>
-      <p>Closed At: {{ item.closed_at }}</p>
-      <p>Have Concers: {{ item.have_concerns }}</p>
-      <p>Caller Notes: {{ item.caller_notes }}</p>
-      <p>Caller ID: {{ item.caller_id }}</p>
-    </div>
+    @if(isDetailsVisible(item.id)){ 
+      <app-ticket-widget 
+        [ticket]="item"
+        [type]="typeMap[item.type]"
+        [id]="item.office_hours_id"
+        [state]="item.state"
+        [created]="item.created_at"
+        [called]="item.called_at"
+        [closed]="item.closed_at"
+        [hvae_concerns]="item.have_concerns"
+        [caller_notes]="item.caller_notes"
+        [caller_id]="item.caller_id">
+      </app-ticket-widget>
     }
     @if(isDetailsVisible(item.id)){
     <button (click)="OpenTicket(item.id)" class="toggle-button">
@@ -31,7 +25,6 @@
       <button (click)="OpenTicket(item.id)" class="toggle-button">
         V
       </button>}
-</div>
 }
 </div>
 </div>
