@@ -8,10 +8,8 @@
 } 
   
   .ticket {
-    border: 1px solid #ddd;
     padding: 20px;
     margin-bottom: 10px;
-    background-color: #f9f9f9;
     border-radius: 8px;
     color: black;
   }

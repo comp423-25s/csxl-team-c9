@@ -1,0 +1,35 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <div class="column-view">
+      <mat-card-subtitle>{{ ticket.type }}</mat-card-subtitle>
+    </div>
+
+
+    <button
+      class="view-button"
+      mat-stroked-button
+      color="secondary"
+      (click)="toggleExpanded()">
+      {{ expanded() ? 'Hide Details' : 'Show Details' }}
+    </button>
+
+
+  </mat-card-header>
+  @if(expanded()) {
+  <mat-card-content>
+    <div class="row">
+    </div>
+    <p markdown>{{ ticket.description }}</p>
+  </mat-card-content>
+
+
+  <mat-card-actions>
+    <button
+      mat-flat-button
+      class="tertiary-button"
+      (click)="closeButtonEvent()">
+      Close Ticket
+    </button>
+  </mat-card-actions>
+  }
+</mat-card>
