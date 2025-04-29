@@ -1,0 +1,90 @@
+::ng-deep .assignment-card {
+    width: 250px;
+    height: 120px;
+    position: relative;
+    padding: 1rem;
+    border-radius: 0.75rem; /* More rounded like your screenshot */
+    background-color: white; /* Match the white card */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Nice subtle shadow */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 250px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: space-between;
+  }
+  
+  .assignment-card-title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .ticket-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #8561f3;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
+  .assignment-card-view-button {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    background-color: #4B0082;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 0.4rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  
+    &:hover {
+      background-color: #370060; /* Darker on hover */
+    }
+  }
+  
+  .assignment-card-tick-num {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    background-color: #4c0082e5;
+    color: white;
+    border-radius: 50%;
+    width: 1.6rem;
+    height: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.75rem;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: flex-end; /* Push button to the left */
+    align-items: center;         /* Center vertically */
+    padding: 8px;                /* Some padding */
+    margin-top: auto;            /* Push footer to the bottom if card uses flex */
+  }
+  
+  .view-button {
+    font-size: 14px;
+    padding: 4px 12px;
+    height: 36px;
+    min-width: 80px;
+    border-width: 2px;
+  }

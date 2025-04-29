@@ -8,13 +8,14 @@ import {
   AssignmentConcept,
   AssignmentsConcepts
 } from 'src/app/my-courses/my-courses.model';
+import { AssignmentCardWidget } from 'src/app/my-courses/course/tickets/widget/assignment-card/assignment-card.widget';
 import { Router } from '@angular/router';
 import { consumerPollProducersForChange } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-assignments-concepts-page',
   standalone: true,
-  imports: [],
+  imports: [AssignmentCardWidget],
   templateUrl: './assignments-concepts-page.component.html',
   styleUrl: './assignments-concepts-page.component.css'
 })

@@ -2,27 +2,28 @@
   <div class="left-column">
     <h4 class="header">Assignments</h4>
     <div class="grid">
-  @for (item of assnConcepts().assignments; track item){
-    <div class="grid-item">
-      <span class="ticket-count">{{ length() }}</span>
-      <h3>{{ item.name }}</h3>
-      <button class="view-button" (click)="navigateToIssues(item.id)">View</button>
-    </div>    
-  }
-</div>
-</div>
-   
-<div class="right-column">
-  <h4 class="header"> Concepts</h4>
-  <div class="grid">
-  @for (item of assnConcepts().concepts; track item){
-    <div class="grid-item">
-      <span class="ticket-count">{{ length() }}</span>
-      <h3>{{ item.name }}</h3>
-      <button class="view-button" (click)="navigateToIssues(item.id)">View</button>
-    </div>    
-}
-</div>
-</div>
-</div>
+      @for (item of assnConcepts().assignments; track item) {
+        <app-assignment-card
+          [name]="item.name"
+          [assignmentID]="item.id"
+          [numTickets]="length()"
+          (viewClicked)="navigateToIssues($event)">
+        </app-assignment-card>
+      }
+    </div>
+  </div>
 
+  <div class="right-column">
+    <h4 class="header">Concepts</h4>
+    <div class="grid">
+      @for (item of assnConcepts().concepts; track item) {
+        <app-assignment-card
+          [name]="item.name"
+          [assignmentID]="item.id"
+          [numTickets]="length()"
+          (viewClicked)="navigateToIssues($event)">
+        </app-assignment-card>
+      }
+    </div>
+  </div>
+</div>
