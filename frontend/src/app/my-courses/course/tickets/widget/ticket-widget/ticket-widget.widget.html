@@ -37,23 +37,24 @@
       </div>
       <mat-divider class="spacing-divider-bottom" />
 
+      <p class="info-line"></p><span style="font-weight: bold;">Description:</span> 
+      <mat-card-title class="title-small">
+        <div [innerHTML]="description"></div>
+      </mat-card-title>
+      
+      
+      
       <span style="font-weight: bold;">Ticket ID:</span> 
       <mat-card-title class="title-small">{{ id }}</mat-card-title>
       
-      <p class="info-line"></p><span style="font-weight: bold;">Ticket State:</span> 
       <mat-card-title class="title-small">{{ state }}</mat-card-title>
-      <p class="info-line"></p><span style="font-weight: bold;">Ticket Created At:</span> 
-      <mat-card-title class="title-small">{{ created }}</mat-card-title>
-      <p class="info-line"></p><span style="font-weight: bold;">Ticket Called At:</span> 
-      <mat-card-title class="title-small">{{ called }}</mat-card-title>
+    
       <p class="info-line"></p><span style="font-weight: bold;">Ticket Closed At:</span> 
       <mat-card-title class="title-small">{{ closed }}</mat-card-title>
       <!-- <span style="font-weight: bold;">Ticket Concerns:</span> 
       <mat-card-title class="title-small">{{ hvae_concerns }}</mat-card-title> -->
       <p class="info-line"></p><span style="font-weight: bold;">Ticket Caller Notes:</span> 
       <mat-card-title class="title-small">{{ caller_notes }}</mat-card-title>
-      <p class="info-line"></p><span style="font-weight: bold;">Ticket Caller ID:</span> 
-      <mat-card-title class="title-small">{{ caller_id }}</mat-card-title>
     </mat-card-content>
   }
 </mat-card>
