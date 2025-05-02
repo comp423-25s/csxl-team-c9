@@ -498,11 +498,14 @@ class OfficeHoursService:
             )
         
     def get_all_assignments_concepts(self, course_id: int):
+        # init vars
         assignments = []
         concepts = []
 
+        # get the list of assignments and concepts
         data: list[TicketCategoryEntity] = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.course_site_id == course_id).all()
 
+        # find the issue count for each item and append them
         for item in data:
             issue_count = self._session.query(IssueEntity.ticket_category_id).filter(
                 IssueEntity.ticket_category_id == item.id
@@ -528,6 +531,7 @@ class OfficeHoursService:
         
         issues = []
 
+        # for each find the number of ticket it has
         for issue in all_issues:
             issue_count = self._session.query(OfficeHoursTicketEntity.issue_id).filter(
                 OfficeHoursTicketEntity.issue_id == issue.id

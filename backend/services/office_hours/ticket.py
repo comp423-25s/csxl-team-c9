@@ -52,15 +52,13 @@ class OfficeHourTicketService:
     """
 
     def query_gpt(self, office_hours_ticket: OfficeHoursTicket) -> int:
-        # first get the assignment id
         # get all issues that share the assignment id
         all_issues: list[IssueEntity] = self._session.query(IssueEntity).filter(IssueEntity.ticket_category_id == office_hours_ticket.ticket_category_id).all()
 
-        print("ALL_ISSUES")
-        print(all_issues)
-
+        # find the ticket_category
         ticket_category: int = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.id == office_hours_ticket.ticket_category_id).one()
 
+        # make requets to OpenAI API for new Issue or existing selection
         response: OpenAITestResponse = self._openai_svc.prompt(
             f"""
                 Your task is to classify office hour tickets based on the specific issue the student needed help with. These tickets are organized under broader categories — for example, an assignment or a general topic area.
@@ -91,6 +89,7 @@ class OfficeHourTicketService:
             """
             , OpenAITestResponse)
         
+        # if there is a new Issue then store it and return issue id else just return the existing issue id
         if response.new_category:
             issue = IssueEntity(name=response.category, ticket_category_id=office_hours_ticket.ticket_category_id)
             self._session.add(issue)
@@ -240,6 +239,7 @@ class OfficeHourTicketService:
                 "Cannot close a ticket that has not been called."
             )
         
+        # query the AI to get selection and set the issue id
         issue_id: int = self.query_gpt(ticket_entity.to_model())
         ticket_entity.issue_id = issue_id
 
@@ -275,8 +275,10 @@ class OfficeHourTicketService:
         return self._to_oh_ticket_overview(ticket_entity)
     
     def _create_or_store_assignment_concept(self, assignment_concept_name: str, category: TicketType, course_site_id: int):        
+        # attempt to find the concept or assignment based on name
         new_item = self._session.query(TicketCategoryEntity).filter(TicketCategoryEntity.name == assignment_concept_name).one_or_none()
 
+        # store if doesn't exist yet and return the id
         if not new_item:
             ticket_cat = TicketCategoryEntity(name=assignment_concept_name, category=category, course_site_id=course_site_id)
             self._session.add(ticket_cat)
@@ -304,6 +306,7 @@ class OfficeHourTicketService:
             PermissionError: If the logged-in user is not a section member student.
 
         """
+        # initially create a concept or assignment
         ticket_category_id_ret = self._create_or_store_assignment_concept(ticket.assignment_concept_name, ticket.type, course_id)
 
 

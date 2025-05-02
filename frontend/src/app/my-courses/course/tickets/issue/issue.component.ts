@@ -22,10 +22,12 @@ export class IssueComponent {
     canActivate: [myCoursesInstructorGuard]
   };
 
+  // need an issues list
   issues = signal<Issue[]>([]);
 
   ticket_category_id: string;
 
+  // need an API request for getting the issues associated with current assignment or concept
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       this.ticket_category_id = params.get('ticket_category_id')!;
@@ -38,6 +40,7 @@ export class IssueComponent {
     });
   }
 
+  // changes active URL to navigate to hierarchical page
   navigateToTickets(issue_id: number): void {
     this.router.navigate([`/course/${this.courseSiteId}/issues/${issue_id}`]);
   }
@@ -50,6 +53,7 @@ export class IssueComponent {
     private router: Router,
     private service: FrontendServiceService
   ) {
+    // get the ids from the URL
     this.courseSiteId = this.route.parent!.snapshot.params['course_site_id'];
     this.ticket_category_id =
       this.route.parent!.snapshot.params['ticket_category_id'];
