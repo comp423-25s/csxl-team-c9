@@ -83,6 +83,7 @@ class OfficeHoursTicketEntity(EntityBase):
     # Add foriegn key for issue_id
     issue_id: Mapped[int] = mapped_column(ForeignKey('issue.id'), nullable=True)
 
+    # Add the id for its concept or assignment
     ticket_category_id: Mapped[int] = mapped_column(ForeignKey('ticket_category.id'), nullable=True)
 
     @classmethod
