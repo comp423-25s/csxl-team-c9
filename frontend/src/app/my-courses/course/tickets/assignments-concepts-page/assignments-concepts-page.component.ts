@@ -34,6 +34,7 @@ export class AssignmentsConceptsPageComponent {
 
   length = signal<number>(0);
 
+  // get the assignments and concepts associated with the current course
   ngOnInit() {
     this.service
       .getAllAssignmentsConcepts(this.courseSiteId)
@@ -45,6 +46,7 @@ export class AssignmentsConceptsPageComponent {
   }
   courseSiteId: string;
 
+  // onClick -> handle navigation to next data element tree sublayer
   navigateToIssues(ticket_category_id: number): void {
     this.router.navigate([
       `/course/${this.courseSiteId}/ticket_categories/${ticket_category_id}/issues`

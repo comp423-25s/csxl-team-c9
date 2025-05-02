@@ -39,6 +39,7 @@ export class GroupComponent {
     1: 'Concept Help'
   };
 
+  // need to get tickets associated with the current issue id
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       this.issue_id = params.get('issue_id')!;
