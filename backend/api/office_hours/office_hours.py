@@ -36,7 +36,7 @@ def get_all_issues(
     course_id: int,
     oh_event_svc: OfficeHoursService = Depends()):
     """
-    Gets all of the issues associated with specific assignemnt.
+    Gets all of the assignment and concepts associated with a course.
     """
     return oh_event_svc.get_all_assignments_concepts(course_id)
 

@@ -79,5 +79,8 @@ class OfficeHours(NewOfficeHours):
 
 
 class MoveTicket(BaseModel):
+    """
+    Pydantic model to represent moving a ticket
+    """
     ticket_id: str
     new_issue_id: str
