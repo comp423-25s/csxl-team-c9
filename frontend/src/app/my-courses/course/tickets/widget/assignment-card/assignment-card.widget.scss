@@ -15,6 +15,8 @@
     flex-direction: column;
     position: relative;
     justify-content: space-between;
+    // padding-top: 2rem;
+    // padding-right: 2rem;
   }
   
   .assignment-card-title {
@@ -38,6 +40,7 @@
     font-size: 12px;
     font-weight: bold;
   }
+  
   
   .assignment-card-view-button {
     position: absolute;
@@ -68,9 +71,11 @@
     height: 1.6rem;
     display: flex;
     align-items: center;
+    padding: 0.25rem 0.5rem;
     justify-content: center;
     font-weight: bold;
     font-size: 0.75rem;
+    // z-index: 1;
   }
 
   .card-footer {
