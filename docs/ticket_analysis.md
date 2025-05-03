@@ -1,5 +1,7 @@
 ### Ticket Widget Analysis
 
+Authors: Trisha Samavedam, Cassidy Lowe, Simon Felt, Daniel Ramsgard
+
 ### Overview
 
 The Ticket Analysis Application was split into three main components. Tickets were grouped by Assignment. Within each assignment, tickets were grouped by Issue, and within each issue Instructors and Teaching Assistants were able to view each ticket that pertained to a specific Issue.
@@ -102,6 +104,13 @@ The ticket analysis application is composed of three distinct Angular Components
 
 The Assignments Concepts page is the first page of our application. This component utilised the `/routes` API Route to fetch all the assignments and concepts using the API backend service `.getAllAssignmentsConcepts`, passing the courseID as an argument. This component utilised Angular signals to fetch and store the respective assignments and concepts and store them in two respective lists. This component imported the AssignmentCardWidget to display each assignment with a routed "View" button that took the user to an issues page for the respective assignment.
 
+Assignment Concepts Page: ![alt text](image.png)
+
 the Issues page is the second page in our application that details all the common issues within a respective concept/assignment. The issues component utilised the `ticket_categories/:ticket_category_id/issues`' route to direct to a sepcific ticket category and fetched those issues using the API backend service `.getAllTickets(this.ticket_category_id).` This component also utilised the IssueCard Widget which to display each issue within an assignment with a routed "View" button that took the user to a page with all the tickets contained within that issue.
 
-The Group page hosts all the tickets that are categorized within a specific issues. The group component utilised the` issues/:issue_id'` route to route to a specific issue's tickets. This used the API Backend service `.get_all_tickets_by_issue(issue_id: str)`. In addition, it used the TicketCardWidget to display all the information associated with a specific ticket. The TicketCardWidget is a modified version of the original CalledTicketWidget used in the office-hours component.
+Issues Page: ![alt text](image-1.png)
+
+The Group page hosts all the tickets that are categorized within a specific issues. The group component utilised the` issues/:issue_id'` route to route to a specific issue's tickets. This used the API Backend service `.get_all_tickets_by_issue(issue_id: str)`. In addition, it used the TicketCardWidget to display all the information associated with a specific ticket. The TicketCardWidget is a modified version of the original CalledTicketWidget used in the office-hours component. In addition, we made our TicketCardWidget expandable to enable instructors and TA's to easily glance at a ticket at first, but also recover more information if needed.
+
+Ticket Group Page: ![alt text](image-2.png)
+Expandable Ticket: ![alt text](image-3.png)
