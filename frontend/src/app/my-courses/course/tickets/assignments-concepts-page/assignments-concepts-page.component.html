@@ -6,7 +6,7 @@
         <app-assignment-card
           [name]="item.name"
           [assignmentID]="item.id"
-          [numTickets]="item.num_tickets"
+          [numTickets]="item.num_issues"
           (viewClicked)="navigateToIssues($event)">
         </app-assignment-card>
       }
@@ -20,7 +20,7 @@
         <app-assignment-card
           [name]="item.name"
           [assignmentID]="item.id"
-          [numTickets]="item.num_tickets"
+          [numTickets]="item.num_issues"
           (viewClicked)="navigateToIssues($event)">
         </app-assignment-card>
       }
