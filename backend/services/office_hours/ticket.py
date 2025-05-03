@@ -96,8 +96,14 @@ class OfficeHourTicketService:
             self._session.commit()
             issue_id = issue.id
         else:
-            issue = self._session.query(IssueEntity).filter_by(name=response.category).one()
-            issue_id = issue.id
+            issue = self._session.query(IssueEntity).filter_by(name=response.category).one_or_none()
+            if not issue:
+                issue = IssueEntity(name=response.category, ticket_category_id=office_hours_ticket.ticket_category_id)
+                self._session.add(issue)
+                self._session.commit()
+                issue_id = issue.id
+            else:
+                issue_id = issue.id
 
         return issue_id
 
