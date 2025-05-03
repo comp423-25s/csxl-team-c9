@@ -33,27 +33,28 @@
     <mat-card-content>
       <mat-divider class="spacing-divider" />
       <div class="row">
-        <p><span class="semibold-text">Created At:</span> {{ ticket.created_at }}</p>
+        <p><span class="semibold-text">Created At:</span><mat-card-title class="title-small"><span *ngIf="ticket.created_at">{{ ticket.created_at| date:'MM/dd/yy h:mm a' }}</span></mat-card-title></p>
       </div>
       <mat-divider class="spacing-divider-bottom" />
 
-      <mat-card-title class="title-medium"><p class="info-line"></p><span style="font-weight: bold;">Description:</span></mat-card-title>
+      <mat-card-title class="title-small"><p class="info-line"></p><span>Description:</span></mat-card-title>
       <mat-card-title class="title-small">
         <div [innerHTML]="description"></div>
       </mat-card-title>
       
       
       
-      <mat-card-title class="title-medium"><span style="font-weight: bold;">Ticket ID:</span> </mat-card-title>
+      <mat-card-title class="title-small"><span>Ticket ID:</span> </mat-card-title>
       <mat-card-title class="title-small">{{ id }}</mat-card-title>
       
-      <mat-card-title class="title-small">{{ state }}</mat-card-title>
+      <!-- <mat-card-title class="title-small">{{ state }}</mat-card-title> -->
     
-      <mat-card-title class="title-medium"><p class="info-line"></p><span style="font-weight: bold;">Ticket Closed At:</span> </mat-card-title>
-      <mat-card-title class="title-small">{{ closed }}</mat-card-title>
+      <mat-card-title class="title-small"><p class="info-line"></p><span>Ticket Closed On:</span> </mat-card-title>
+      <mat-card-title class="title-small"><span *ngIf="closed">{{ closed | date:'MM/dd/yy h:mm a' }}</span></mat-card-title>
+      
       <!-- <span style="font-weight: bold;">Ticket Concerns:</span> 
       <mat-card-title class="title-small">{{ hvae_concerns }}</mat-card-title> -->
-      <mat-card-title class="title-medium"><p class="info-line"></p><span style="font-weight: bold;">Ticket Caller Notes:</span></mat-card-title>
+      <mat-card-title class="title-small"><p class="info-line"></p><span>Ticket Caller Notes:</span></mat-card-title>
       <mat-card-title class="title-small">{{ caller_notes }}</mat-card-title>
     </mat-card-content>
   }
