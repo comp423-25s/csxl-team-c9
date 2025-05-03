@@ -54,11 +54,7 @@ This method retrieves all the tickets for a given issue. The main argument for t
 
 We used three main models: assignment-concepts, issues, and tickets.
 
-# 📦 Office Hours Backend Models
-
-This document provides documentation for two core Pydantic models used in the office hours support system: `AssignmentConcept` and `Issue`. These models are used to serialize and validate data related to course help topics, issues, and their ticket metrics.
-
----
+# Backend Models
 
 ## Model: `AssignmentConcept`
 
