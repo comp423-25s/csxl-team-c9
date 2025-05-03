@@ -1,18 +1,14 @@
 .container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  gap: 10px; 
-  padding-left: 10px; 
-  padding-right: 10px;
-  margin: 2rem .3rem 0 .3rem;
-} 
+  column-count: 2;
+  column-gap: 10px;
+}
 
 .ticket {
-  padding: 2px;
-  margin-bottom: 1px;
-  border-radius: 8px;
-  color: black;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
 }
+
 
 .toggle-button {
   background: none;
