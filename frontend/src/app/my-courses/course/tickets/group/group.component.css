@@ -1,54 +1,54 @@
- .container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 5px; 
-    padding-left: 10px; 
-    padding-right: 10px;
-    margin: 2rem .3rem 0 .3rem;
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 10px; 
+  padding-left: 10px; 
+  padding-right: 10px;
+  margin: 2rem .3rem 0 .3rem;
 } 
-  
-  .ticket {
-    padding: 20px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    color: black;
-  }
-  
-  .toggle-button {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: white;
-    background-color: #4B0082;
+
+.ticket {
+  padding: 2px;
+  margin-bottom: 1px;
+  border-radius: 8px;
+  color: black;
 }
-  
-  .ticket-details {
-    padding-top: 10px;
-    padding-left: 20px;
-    border-top: 1px solid #ddd;
-    margin-top: 10px;
-  }
-  
-  .left-column {
-    display: flex;
-    flex-direction: column;
-    width: 95%;
-    height: 85vh;
-  }
 
-  .right-column {
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-    height: 85vh;
-    padding-right: 16px;
-  }
+.toggle-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+  background-color: #4B0082;
+}
 
-  .queue-pane {
-    flex: 1 1 auto;
-    min-height: 0;
-    max-height: 100%;
-    max-width: 100%;
-    border-color: transparent !important;
-  }
+.ticket-details {
+  padding-top: 10px;
+  padding-left: 20px;
+  border-top: 1px solid #ddd;
+  margin-top: 10px;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  height: 85vh;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  height: 85vh;
+  padding-right: 16px;
+}
+
+.queue-pane {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  max-width: 100%;
+  border-color: transparent !important;
+}
