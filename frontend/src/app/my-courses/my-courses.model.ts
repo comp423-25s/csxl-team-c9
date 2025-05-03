@@ -71,7 +71,7 @@ export interface TermOverviewJson {
 export interface AssignmentConcept {
   id: number;
   name: string;
-  num_tickets: number;
+  num_issues: number;
   category: number;
 }
 
