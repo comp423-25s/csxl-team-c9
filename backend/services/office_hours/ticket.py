@@ -61,27 +61,42 @@ class OfficeHourTicketService:
         # make requets to OpenAI API for new Issue or existing selection
         response: OpenAITestResponse = self._openai_svc.prompt(
             f"""
-                Your task is to classify office hour tickets based on the specific issue the student needed help with. These tickets are organized under broader categories — for example, an assignment or a general topic area.
+                Your task is to classify office hour tickets based on the specific problem the student needed help with. Each ticket is related to a broader context — for example, a course topic or assignment — but your job is to focus on the underlying conceptual issue, not just surface-level overlap.
 
-                The current context for this ticket is: "{ticket_category}"
+                Context for this ticket: "{ticket_category}"
 
-                You must choose the best-fit category from the list below:
+                Choose the best-fit category from this list:
                 ({', '.join(issue.to_model().name for issue in all_issues)})
 
-                When selecting a category, prioritize **conceptual similarity** over superficial topic overlap. For example, "resolving merge conflicts" and "merging divergent branches" share a focus on handling Git conflicts and should likely be grouped. But "creating a Git branch" is more about setup and should not be grouped with conflict resolution.
+                When selecting a category:
 
-                You may use an existing category if the ticket clearly fits, but do not force a match. If no existing category is suitable, you may create a new one.
+                Prioritize conceptual similarity — this means the root problem or type of confusion should match, not just the subject or tool involved.
+
+                Do not group tickets simply because they involve the same technology or topic. For example:
+
+                "Docker not running due to daemon error" and "confusing Dockerfile syntax" should be separate — one is a runtime issue, the other is a configuration/syntax issue.
+
+                "Resolving merge conflicts" and "merging divergent branches" share a conceptual focus on handling Git divergence and should be grouped.
+
+                But "creating a Git branch" is setup-related and conceptually distinct — it should not be grouped with conflict resolution.
+
+                If the issue does not clearly fit an existing category, create a new one. Be conservative: when in doubt, make a new category.
 
                 Any new category must:
-                - Be 1–5 words long
-                - Be more specific than a general topic (e.g., “Docker not running” instead of “Docker Issues”)
-                - Be general enough that it could apply to multiple tickets
+
+                Be 1–5 words long
+
+                Be more specific than a general topic (e.g., use “Dockerfile syntax confusion” instead of “Docker Issues”)
+
+                Be general enough that multiple similar tickets could use it
 
                 Respond with:
-                - A boolean indicating whether a new category was created
-                - The best-fit category (either an existing one or your newly created one)
 
-                Base your decision only on the content of the ticket and the given context. Do not infer beyond the information provided.
+                A boolean indicating whether a new category was created
+
+                The best-fit category (either an existing one or your newly created one)
+
+                Only use the ticket content and provided context — do not make unstated assumptions.
             """
             ,
             f"""
