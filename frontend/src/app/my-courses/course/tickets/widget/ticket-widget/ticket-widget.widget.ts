@@ -20,6 +20,8 @@ import {
 } from '@angular/core';
 import { OfficeHourTicketOverview, Ticket } from '../../../../my-courses.model';
 import { MatCardModule } from '@angular/material/card';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
@@ -36,12 +38,13 @@ export class TicketWidget implements OnChanges {
   @Input() ticket!: Ticket;
   @Input() calledByUser: boolean = false;
   @Input() type!: string;
+  @Input() description!: string;
   @Input() id!: number;
   @Input() state!: number;
   @Input() created!: string;
   @Input() called!: string;
   @Input() closed!: string | null;
-  @Input() hvae_concerns!: boolean;
+  @Input() have_concerns!: boolean;
   @Input() caller_notes!: string;
   @Input() caller_id!: number;
   @Output() closeButtonPressed = new EventEmitter<Ticket>();
@@ -59,9 +62,11 @@ export class TicketWidget implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // If the TA calling the ticket is the active user, expand the card
     if (changes['calledByUser'] && changes['calledByUser'].currentValue) {
       this.expanded.set(true);
     }
+
+    const raw = marked.parse(this.description || '') as string;
+    this.description = DOMPurify.sanitize(raw);
   }
 }

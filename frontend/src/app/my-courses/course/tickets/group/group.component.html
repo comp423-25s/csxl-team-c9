@@ -6,14 +6,11 @@
       <app-ticket-widget 
         [ticket]="item"
         [type]="typeMap[item.type]"
+        [description]="item.description"
         [id]="item.office_hours_id"
-        [state]="item.state"
-        [created]="item.created_at"
-        [called]="item.called_at"
         [closed]="item.closed_at"
-        [hvae_concerns]="item.have_concerns"
-        [caller_notes]="item.caller_notes"
-        [caller_id]="item.caller_id">
+        [have_concerns]="item.have_concerns"
+        [caller_notes]="item.caller_notes">
       </app-ticket-widget>
     </div>
 }
